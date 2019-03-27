@@ -24,18 +24,15 @@ export class AlLoginComponent implements OnInit {
       socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
     }
 
-    this.socialAuthService.signIn(socialPlatformProvider).then(
-      (userData) => {
-        console.log(socialPlatform + " sign in data : ", userData);
-        this.onSignIn.emit(userData);
-        // Now sign-in with userData
-        // ...
+    this.socialAuthService.signIn(socialPlatformProvider).then(r => r);
 
-      }
-    );
+
   }
 
   ngOnInit() {
+    this.socialAuthService.authState.subscribe(r => {
+      this.onSignIn.emit(r);
+    });
   }
 
 }

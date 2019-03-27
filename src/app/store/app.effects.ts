@@ -2,21 +2,29 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap, withLatestFrom, first, switchMap } from 'rxjs/operators';
 import { DocService } from '../doc.service';
 import * as appStore from './';
 
 @Injectable()
 export class AppEffects {
 
+    @Effect({ dispatch: false })
+    logIt$ = this.actions$
+        .pipe(withLatestFrom(this.store$.select(r => r)),
+        map(store => console.log('store', store)));
+
     @Effect()
-    loadDocs$ = this.actions$
-        .pipe(ofType(appStore.ActionTypes.GetDocsByType),
-        mergeMap((action: any) => {
-            return this.docService.getAll(action.payload.docType).pipe(map(r => new appStore.GetDocsByTypeSuccess(r)));
-        }
-        )
-        );
+    saveUser$ = this.actions$
+        .pipe(ofType(appStore.ActionTypes.SaveUser),
+        switchMap((action: any) => this.docService.save(action.payload).pipe(map(r => new appStore.SaveUserSuccess()))));
+
+    @Effect()
+    getUsers$ = this.actions$
+        .pipe(ofType(appStore.ActionTypes.GetUsers),
+        switchMap((action: any) => this.docService.getAll('user').pipe(map(r => new appStore.GetUsersSuccess(r)))));
+
+
     constructor(
         private actions$: Actions,
         private docService: DocService,

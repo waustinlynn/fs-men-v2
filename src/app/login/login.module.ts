@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AlLoginComponent } from '../al-login/al-login.component';
+import { MaterialModule } from '../material.module';
 
 import {
     SocialLoginModule,
@@ -15,7 +16,7 @@ export function getAuthServiceConfigs() {
         [
             {
                 id: GoogleLoginProvider.PROVIDER_ID,
-                provider: new GoogleLoginProvider("")
+                provider: new GoogleLoginProvider("693118017511-lnnh3dkqdi5963ptq15oleg3olt1lsn7.apps.googleusercontent.com")
             }
         ]
     );
@@ -27,7 +28,8 @@ export function getAuthServiceConfigs() {
         AlLoginComponent
     ],
     imports: [
-        SocialLoginModule
+        SocialLoginModule,
+        MaterialModule
     ],
     exports: [
         AlLoginComponent

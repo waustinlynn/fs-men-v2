@@ -1,25 +1,39 @@
 import { Action } from '@ngrx/store';
 
 export enum ActionTypes {
-    Login = 'Login',
-    GetDocsByType = 'GetDocsByType',
-    GetDocsByTypeSuccess = 'GetDocsByTypeSuccess'
+    SaveUser = 'SaveUser',
+    SaveUserSuccess = 'SaveUserSuccess',
+    GetUsers = 'GetUsers',
+    GetUsersSuccess = 'GetUsersSuccess',
+    SetLoginData = 'SetLoginData'
+
 }
 
-export class Login implements Action {
-    readonly type = ActionTypes.Login;
-}
-
-export class GetDocsByType implements Action {
-    readonly type = ActionTypes.GetDocsByType;
+export class SetLoginData implements Action {
+    readonly type = ActionTypes.SetLoginData;
     constructor(public payload: any) { }
 }
 
-export class GetDocsByTypeSuccess implements Action {
-    readonly type = ActionTypes.GetDocsByTypeSuccess;
+
+export class GetUsersSuccess implements Action {
+    readonly type = ActionTypes.GetUsersSuccess;
+    constructor(public payload: any) { }
+}
+export class GetUsers implements Action {
+    readonly type = ActionTypes.GetUsers;
+}
+
+export class SaveUser implements Action {
+    readonly type = ActionTypes.SaveUser;
     constructor(public payload: any) { }
 }
 
-export type Action = Login
-    | GetDocsByType
-    | GetDocsByTypeSuccess
+export class SaveUserSuccess implements Action {
+    readonly type = ActionTypes.SaveUserSuccess;
+}
+
+export type Action = SaveUser
+    | SaveUserSuccess
+    | GetUsers
+    | GetUsersSuccess
+    | SetLoginData

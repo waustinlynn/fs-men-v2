@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as appStore from './store';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'ngrx-starter';
-  loggedIn: boolean = false;
-  userData: any;
+  title = 'FS MEN';
   storeData$: Observable<appStore.AppState>;
 
   constructor(private store: Store<any>) {
@@ -19,17 +18,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.storeData$.subscribe(r => this.loggedIn = r.hasLoggedIn);
   }
 
-  login() {
-    this.store.dispatch(new appStore.Login());
-    this.store.dispatch(new appStore.GetDocsByType({ docType: 'test' }));
-    this.storeData$.subscribe(r => console.log(r));
-  }
 
   onSignIn(event: any) {
-    console.log('app onSignIn', event);
-    this.userData = JSON.stringify(event);
+    this.store.dispatch(new appStore.SetLoginData(event));
   }
 }

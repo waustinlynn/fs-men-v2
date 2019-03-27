@@ -1,5 +1,9 @@
-<h2>Angular ngrx starter template</h2>
-<al-login (onSignIn)="onSignIn($event)"></al-login>
-{{userData}}
+<h3 class="mat-display-1">Fieldstone Men's League</h3>
+<div *ngIf="(storeData$ | async).loggedIn; else login">
+    <p class="mat-body">{{(storeData$ | async).loginData.name}}</p>
+</div>
+<ng-template #login>
+    <al-login (onSignIn)="onSignIn($event)"></al-login>
+</ng-template>
 <hr />
 <router-outlet></router-outlet>
