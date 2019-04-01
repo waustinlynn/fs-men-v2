@@ -17,12 +17,16 @@ export class AppEffects {
     @Effect()
     saveUser$ = this.actions$
         .pipe(ofType(appStore.ActionTypes.SaveUser),
-        switchMap((action: any) => this.docService.save(action.payload).pipe(map(r => new appStore.SaveUserSuccess()))));
+        switchMap((action: any) => this.docService.save({ ...action.payload, docType: 'user' }).pipe(map(r => new appStore.SaveUserSuccess()))));
 
     @Effect()
     getUsers$ = this.actions$
         .pipe(ofType(appStore.ActionTypes.GetUsers),
-        switchMap((action: any) => this.docService.getAll('user').pipe(map(r => new appStore.GetUsersSuccess(r)))));
+        switchMap((action: any) => {
+            return this.docService.getAll('user').pipe(map(r => {
+                return new appStore.GetUsersSuccess(r);
+            }));
+        }));
 
 
     constructor(

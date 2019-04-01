@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { first, filter } from 'rxjs/operators';
 import {
   AuthService,
   FacebookLoginProvider,
@@ -30,9 +31,10 @@ export class AlLoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.socialAuthService.authState.subscribe(r => {
-      this.onSignIn.emit(r);
-    });
+    this.socialAuthService.authState.pipe(filter(r => r != undefined && r != null), first())
+      .subscribe(r => {
+        this.onSignIn.emit(r);
+      });
   }
 
 }

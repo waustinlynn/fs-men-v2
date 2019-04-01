@@ -5,8 +5,14 @@ export enum ActionTypes {
     SaveUserSuccess = 'SaveUserSuccess',
     GetUsers = 'GetUsers',
     GetUsersSuccess = 'GetUsersSuccess',
-    SetLoginData = 'SetLoginData'
+    SetLoginData = 'SetLoginData',
+    SetUser = 'SetUser'
 
+}
+
+export class SetUser implements Action {
+    readonly type = ActionTypes.SetUser;
+    constructor(public payload: any) { }
 }
 
 export class SetLoginData implements Action {
@@ -37,3 +43,4 @@ export type Action = SaveUser
     | GetUsers
     | GetUsersSuccess
     | SetLoginData
+    | SetUser    
