@@ -6,15 +6,23 @@ import * as actions from './app.actions';
 export const initialState = {
     users: [],
     user: undefined,
+    userMap: undefined,
     loginData: undefined,
     loggedIn: false,
-    admin: false
+    admin: false,
+    adminData: undefined
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
     switch (action.type) {
         case ActionTypes.GetUsersSuccess: {
-            return { ...state, users: action.payload };
+            let newState = { ...state, users: action.payload };
+            let um = new Map<string, any>();
+            (action.payload as any[]).forEach(el => {
+                um.set(el.id, el);
+            });
+            newState.userMap = um;
+            return newState;
         }
 
         case ActionTypes.SetLoginData: {
@@ -22,6 +30,21 @@ export function appReducer(state: model.AppState = initialState, action: actions
             if (newState.loginData != undefined && newState.loginData.name != undefined) {
                 newState.loggedIn = true;
             }
+            return newState;
+        }
+
+        case ActionTypes.SetUser: {
+            return { ...state, user: action.payload }
+        }
+
+        case ActionTypes.GetAdminsSuccess: {
+            return { ...state, adminData: action.payload }
+        }
+
+        case ActionTypes.SetUserData: {
+            let newState = { ...state };
+            newState.user = state.users.find(r => r.email == state.loginData.email);
+
             return newState;
         }
 

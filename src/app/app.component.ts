@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, ActionsSubject } from '@ngrx/store';
 import * as appStore from './store';
 import { Observable, combineLatest } from 'rxjs';
-import { first, filter } from 'rxjs/operators';
+import { first, filter, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -12,30 +12,42 @@ import { first, filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   title = 'FS MEN';
   storeData$: Observable<appStore.AppState>;
+  storeData: appStore.AppState;
 
   constructor(private store: Store<any>, private as$: ActionsSubject) {
     this.storeData$ = store.select(r => r.app);
+    this.storeData$.subscribe(r => this.storeData = r);
   }
 
   ngOnInit() {
+    this.store.dispatch(new appStore.GetAdmins({}));
+    this.store.dispatch(new appStore.GetUsers());
 
     //initialize get users
-    this.store.dispatch(new appStore.GetUsers());
     combineLatest(
-      this.storeData$.pipe(filter(r => r.users != undefined && r.users.length > 0), first()),
-      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLoginData), first())
-    ).subscribe(([st, act]) => {
-      st = st as any;
-      let actionData = { ...act } as any;
-      let user = st.users.find(r => r.email == actionData.payload.email);
-      if (user != undefined) {
-        this.store.dispatch(new appStore.SetUser(user));
-      } else {
-        delete actionData.payload.id;
-        this.store.dispatch(new appStore.SaveUser(actionData.payload));
-      }
-    })
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetUsersSuccess), first()),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLoginData), first()),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetAdminsSuccess), first())
+    ).subscribe(_ => {
+      this.store.dispatch(new appStore.SetUserData({}));
+      this.as$.pipe(
+        filter(r => r.type == appStore.ActionTypes.SetUserData),
+        withLatestFrom(this.storeData$),
+        first()
+      ).subscribe(([actionData, storeData]) => {
+        if (storeData.user == undefined) {
+          let pl = { ...storeData.loginData };
+          delete pl.id;
+          this.store.dispatch(new appStore.SaveUser(pl));
+        }
+      })
+    });
 
+  }
+
+  saveAdmin() {
+    let admins = [{ userId: this.storeData.user.id }];
+    this.store.dispatch(new appStore.SaveDoc({ docType: 'admin', admins }));
   }
 
 

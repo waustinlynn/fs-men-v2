@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -15,12 +16,14 @@ import { appReducer } from './store/app.reducer';
 import { AppEffects } from './store/app.effects';
 
 import { MaterialModule } from './material.module';
+import { EditPlayerComponent } from './edit-player/edit-player.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EditPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { MaterialModule } from './material.module';
     StoreModule.forRoot({ app: appReducer }),
     EffectsModule.forRoot([AppEffects]),
     MaterialModule,
-    LoginModule
+    LoginModule,
+    FormsModule
   ],
   providers: [DocService],
   bootstrap: [AppComponent]

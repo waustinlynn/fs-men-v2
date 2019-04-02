@@ -1,7 +1,12 @@
 <h3 class="mat-display-1">Fieldstone Men's League</h3>
 <div *ngIf="(storeData$ | async).loggedIn; else login">
     <p class="mat-body">{{(storeData$ | async).loginData.name}}</p>
+    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu">
+        <a href="player" mat-menu-item>Add Player</a>
+    </mat-menu>
 </div>
+
 <ng-template #login>
     <al-login (onSignIn)="onSignIn($event)"></al-login>
 </ng-template>

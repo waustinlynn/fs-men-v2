@@ -1,0 +1,10 @@
+<mat-form-field>
+  <input matInput placeholder="First Name" [(ngModel)]="player.firstName">
+</mat-form-field>
+<mat-form-field>
+  <input matInput placeholder="Last Name" [(ngModel)]="player.lastName">
+</mat-form-field>
+<mat-form-field>
+  <input matInput placeholder="Facility" [(ngModel)]="player.facility">
+</mat-form-field>
+<button (click)="save()" mat-raised-button color="primary">Save</button>

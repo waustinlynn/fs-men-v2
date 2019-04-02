@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material';
+
 
 
 
@@ -10,12 +13,16 @@ import { MatButtonModule } from '@angular/material/button';
     imports: [
         MatListModule,
         MatMenuModule,
-        MatButtonModule
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule
     ],
     exports: [
         MatListModule,
         MatMenuModule,
-        MatButtonModule
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule
     ],
     providers: [],
     bootstrap: []

@@ -28,6 +28,25 @@ export class AppEffects {
             }));
         }));
 
+    @Effect()
+    getAdmins$ = this.actions$
+        .pipe(ofType(appStore.ActionTypes.GetAdmins),
+        switchMap((action: any) => {
+            return this.docService.getLatest('admin').pipe(map(r => {
+                return new appStore.GetAdminsSuccess(r);
+            }));
+        }));
+
+    @Effect()
+    saveDoc$ = this.actions$
+        .pipe(
+        ofType(appStore.ActionTypes.SaveDoc),
+        switchMap((action: any) => {
+            return this.docService.save(action.payload).pipe(map(r => new appStore.UpdateSuccess(r)));
+        })
+        )
+
+
 
     constructor(
         private actions$: Actions,
