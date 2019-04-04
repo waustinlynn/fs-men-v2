@@ -13,10 +13,12 @@ export class AppComponent implements OnInit {
   title = 'FS MEN';
   storeData$: Observable<appStore.AppState>;
   storeData: appStore.AppState;
+  actionsForSnackbar: string[];
 
   constructor(private store: Store<any>, private as$: ActionsSubject) {
     this.storeData$ = store.select(r => r.app);
     this.storeData$.subscribe(r => this.storeData = r);
+    this.actionsForSnackbar = [appStore.ActionTypes.UpdateSuccess];
   }
 
   ngOnInit() {

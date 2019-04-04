@@ -10,7 +10,8 @@ export const initialState = {
     loginData: undefined,
     loggedIn: false,
     admin: false,
-    adminData: undefined
+    adminData: undefined,
+    players: undefined
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
@@ -46,6 +47,10 @@ export function appReducer(state: model.AppState = initialState, action: actions
             newState.user = state.users.find(r => r.email == state.loginData.email);
 
             return newState;
+        }
+
+        case ActionTypes.GetPlayersSuccess: {
+            return { ...state, players: action.payload };
         }
 
         default:

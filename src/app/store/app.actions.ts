@@ -7,11 +7,23 @@ export enum ActionTypes {
     GetUsersSuccess = 'GetUsersSuccess',
     SetLoginData = 'SetLoginData',
     SetUser = 'SetUser',
-    SaveDoc = 'SaveAdmin',
+    SaveDoc = 'SaveDoc',
     UpdateSuccess = 'UpdateSuccess',
     GetAdmins = 'GetAdmins',
     GetAdminsSuccess = 'GetAdminsSuccess',
-    SetUserData = 'SetUserData'
+    SetUserData = 'SetUserData',
+    GetPlayers = 'GetPlayers',
+    GetPlayersSuccess = 'GetPlayersSuccess'
+}
+
+export class GetPlayersSuccess implements Action {
+    readonly type = ActionTypes.GetPlayersSuccess;
+    constructor(public payload: any) { }
+}
+
+export class GetPlayers implements Action {
+    readonly type = ActionTypes.GetPlayers;
+    constructor(public payload: any) { }
 }
 
 export class SetUserData implements Action {
@@ -78,3 +90,5 @@ export type Action = SaveUser
     | GetAdmins
     | GetAdminsSuccess
     | SetUserData
+    | GetPlayers
+    | GetPlayersSuccess

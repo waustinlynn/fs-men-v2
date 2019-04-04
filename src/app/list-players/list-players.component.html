@@ -1,0 +1,21 @@
+<div class="mat-h3">Set Teams</div>
+<p *ngFor="let player of (data$ | async).players">{{player.firstName}}</p>
+<div class="flex-container" style="max-width:360px">
+  <mat-form-field>
+    <mat-label>Select Player</mat-label>
+    <mat-select (selectionChange)="playerSelected($event)">
+      <mat-option *ngFor="let player of playerList" [value]="player.id">
+        {{player.firstName}} {{player.lastName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Team Name" [(ngModel)]="teamName">
+  </mat-form-field>
+  <mat-card *ngIf="playerSelections.length > 0">
+    <div class="mat-h3" style="font-weight:bold">Added Players:</div>
+    <div class="mat-body" style="margin: 2px" *ngFor="let player of playerSelections">{{player.firstName}} {{player.lastName}}</div>
+  </mat-card>
+</div>
+<button mat-raised-button (click)="createTeam()">Create Team</button>
+<button mat-raised-button (click)="clearSelections()">Clear</button>

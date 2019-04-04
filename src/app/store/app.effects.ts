@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, withLatestFrom, first, switchMap } from 'rxjs/operators';
+import { map, mergeMap, withLatestFrom, first, switchMap, filter } from 'rxjs/operators';
 import { DocService } from '../doc.service';
 import * as appStore from './';
 
@@ -43,6 +43,14 @@ export class AppEffects {
         ofType(appStore.ActionTypes.SaveDoc),
         switchMap((action: any) => {
             return this.docService.save(action.payload).pipe(map(r => new appStore.UpdateSuccess(r)));
+        })
+        )
+
+    @Effect() getPlayers$ = this.actions$
+        .pipe(
+        filter(r => r.type == appStore.ActionTypes.GetPlayers),
+        switchMap((action: any) => {
+            return this.docService.getAll('player').pipe(map(r => new appStore.GetPlayersSuccess(r)));
         })
         )
 

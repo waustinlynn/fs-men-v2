@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
+import { AlSnackbarModule } from './al-snackbar/al-snackbar.module';
 
 import { DocService } from './doc.service';
 
@@ -17,13 +18,15 @@ import { AppEffects } from './store/app.effects';
 
 import { MaterialModule } from './material.module';
 import { EditPlayerComponent } from './edit-player/edit-player.component';
+import { ListPlayersComponent } from './list-players/list-players.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditPlayerComponent
+    EditPlayerComponent,
+    ListPlayersComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { EditPlayerComponent } from './edit-player/edit-player.component';
     EffectsModule.forRoot([AppEffects]),
     MaterialModule,
     LoginModule,
-    FormsModule
+    FormsModule,
+    AlSnackbarModule
   ],
   providers: [DocService],
   bootstrap: [AppComponent]

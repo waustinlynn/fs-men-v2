@@ -5,5 +5,6 @@ export interface AppState {
     loginData: any;
     loggedIn: boolean;
     admin: boolean;
-    adminData
+    adminData: any;
+    players: any[];
 }

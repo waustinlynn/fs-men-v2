@@ -1,9 +1,15 @@
-<h3 class="mat-display-1">Fieldstone Men's League</h3>
+<mat-card>
+    <div class="mat-h1 no-marg">Fieldstone Men's League</div>
+    <div *ngIf="(storeData$ | async).loggedIn; else login">
+        <p *ngIf="(storeData$ | async).loggedIn" class="mat-small no-marg">{{(storeData$ | async).loginData.name}}</p>
+    </div>
+</mat-card>
+
 <div *ngIf="(storeData$ | async).loggedIn; else login">
-    <p class="mat-body">{{(storeData$ | async).loginData.name}}</p>
     <button mat-button [matMenuTriggerFor]="menu">Menu</button>
     <mat-menu #menu="matMenu">
         <a href="player" mat-menu-item>Add Player</a>
+        <a href="players" mat-menu-item>List Players</a>
     </mat-menu>
 </div>
 
@@ -12,3 +18,4 @@
 </ng-template>
 <hr />
 <router-outlet></router-outlet>
+<al-snackbar [actions]="actionsForSnackbar"></al-snackbar>
