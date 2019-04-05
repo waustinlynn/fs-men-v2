@@ -16,7 +16,7 @@ export class AlSnackbarComponent implements OnInit {
 
   ngOnInit() {
     this.as$.pipe(filter(r => this.actions.some(el => el == r.type))).subscribe((r: any) => {
-      this.snackBar.open(r.msg == undefined ? 'Update Successful' : r.msg, 'Got it', { duration: 3000 });
+      this.snackBar.open(r.payload.msg == undefined || r.payload.msg == null ? 'Update Successful' : r.payload.msg, 'Got it', { duration: 3000 });
     })
   }
 }

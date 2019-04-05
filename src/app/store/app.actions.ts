@@ -13,7 +13,43 @@ export enum ActionTypes {
     GetAdminsSuccess = 'GetAdminsSuccess',
     SetUserData = 'SetUserData',
     GetPlayers = 'GetPlayers',
-    GetPlayersSuccess = 'GetPlayersSuccess'
+    GetPlayersSuccess = 'GetPlayersSuccess',
+    ShowSnackbarError = 'ShowSnackbarError',
+    GetTeamsSuccess = 'GetTeamsSuccess',
+    GetDoc = 'GetDoc',
+    // GetDocSuccess = 'GetDocSuccess',
+    GetList = 'GetList',
+    // GetListSuccess = 'GetListSuccess'
+}
+
+export class GetDoc {
+    readonly type = ActionTypes.GetDoc;
+    constructor(public payload: any) { }
+}
+
+// export class GetDocSuccess {
+//     readonly type = GetDocSuccess;
+//     constructor(public payload: any) { }
+// }
+
+export class GetList {
+    readonly type = ActionTypes.GetList;
+    constructor(public payload: any) { }
+}
+
+// export class GetListSuccess {
+//     readonly type = GetListSuccess;
+//     constructor(public payload: any) { }
+// }
+
+export class GetTeamsSuccess {
+    readonly type = ActionTypes.GetTeamsSuccess;
+    constructor(public payload: any) { }
+}
+
+export class ShowSnackbarError implements Action {
+    readonly type = ActionTypes.ShowSnackbarError;
+    constructor(public payload: any) { }
 }
 
 export class GetPlayersSuccess implements Action {
@@ -68,6 +104,7 @@ export class GetUsersSuccess implements Action {
 }
 export class GetUsers implements Action {
     readonly type = ActionTypes.GetUsers;
+    constructor(public payload: any) { }
 }
 
 export class SaveUser implements Action {
@@ -77,6 +114,7 @@ export class SaveUser implements Action {
 
 export class SaveUserSuccess implements Action {
     readonly type = ActionTypes.SaveUserSuccess;
+    constructor(public payload: any) { }
 }
 
 export type Action = SaveUser
@@ -92,3 +130,7 @@ export type Action = SaveUser
     | SetUserData
     | GetPlayers
     | GetPlayersSuccess
+    | ShowSnackbarError
+    | GetTeamsSuccess
+    | GetDoc
+    | GetList

@@ -27,10 +27,35 @@ export class ListPlayersComponent implements OnInit {
 
   ngOnInit() {
     this.store$.dispatch(new appStore.GetPlayers({}));
+    let getTeamsPl = {
+      docType: 'teams',
+      returnAction: appStore.ActionTypes.GetTeamsSuccess
+    } as appStore.GetDocPayload;
+
+    this.store$.dispatch(new appStore.GetDoc(getTeamsPl));
   }
 
   createTeam() {
+    if (this.playerSelections.length != 2) {
+      this.store$.dispatch(new appStore.ShowSnackbarError({ msg: 'Must Select 2 Players per Team' }));
+      return;
+    }
 
+    if (this.teamName == undefined || this.teamName.length == 0) {
+      this.store$.dispatch(new appStore.ShowSnackbarError({ msg: 'Must Enter a Team Name' }));
+      return;
+    }
+    let players = this.playerSelections.map(r => r.id);
+    let doc = {
+      docType: 'teams',
+      teams: [
+        {
+          players: [...players],
+          name: this.teamName
+        }
+      ]
+    }
+    // this.store$.dispatch(new appStore.SaveDoc(doc));
   }
 
   playerSelected(event) {

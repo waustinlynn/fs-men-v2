@@ -18,12 +18,12 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<any>, private as$: ActionsSubject) {
     this.storeData$ = store.select(r => r.app);
     this.storeData$.subscribe(r => this.storeData = r);
-    this.actionsForSnackbar = [appStore.ActionTypes.UpdateSuccess];
+    this.actionsForSnackbar = [appStore.ActionTypes.UpdateSuccess, appStore.ActionTypes.ShowSnackbarError];
   }
 
   ngOnInit() {
     this.store.dispatch(new appStore.GetAdmins({}));
-    this.store.dispatch(new appStore.GetUsers());
+    this.store.dispatch(new appStore.GetUsers({}));
 
     //initialize get users
     combineLatest(

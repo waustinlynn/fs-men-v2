@@ -7,4 +7,11 @@ export interface AppState {
     admin: boolean;
     adminData: any;
     players: any[];
+    teams: any[];
+    playerTeamMap: Map<string, string>;
+}
+
+export class GetDocPayload {
+    docType: string;
+    returnAction: string;
 }
