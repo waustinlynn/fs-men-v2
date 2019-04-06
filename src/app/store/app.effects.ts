@@ -42,7 +42,7 @@ export class AppEffects {
         .pipe(
             ofType(appStore.ActionTypes.SaveDoc),
             switchMap((action: any) => {
-                return this.docService.save(action.payload).pipe(map(r => new appStore.UpdateSuccess(r)));
+                return this.docService.save(action.payload).pipe(map(r => new appStore.UpdateSuccess({ msg: 'Save Successful' })));
             })
         )
 
@@ -59,9 +59,7 @@ export class AppEffects {
             filter(r => r.type == appStore.ActionTypes.GetDoc),
             switchMap((action: any) => {
                 let pl = action.payload as appStore.GetDocPayload;
-                console.log(pl);
                 return this.docService.getLatest(pl.docType).pipe(map(r => {
-                    console.log(r);
                     return { type: pl.returnAction, payload: r };
                 }));
             })

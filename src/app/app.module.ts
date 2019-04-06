@@ -19,6 +19,8 @@ import { AppEffects } from './store/app.effects';
 import { MaterialModule } from './material.module';
 import { EditPlayerComponent } from './edit-player/edit-player.component';
 import { ListPlayersComponent } from './list-players/list-players.component';
+import { ListTeamsComponent } from './list-teams/list-teams.component';
+import { EditDivisionsComponent } from './edit-divisions/edit-divisions.component';
 
 
 
@@ -26,7 +28,9 @@ import { ListPlayersComponent } from './list-players/list-players.component';
   declarations: [
     AppComponent,
     EditPlayerComponent,
-    ListPlayersComponent
+    ListPlayersComponent,
+    ListTeamsComponent,
+    EditDivisionsComponent
   ],
   imports: [
     BrowserModule,

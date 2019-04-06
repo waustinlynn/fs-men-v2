@@ -14,3 +14,9 @@
     display: flex;
     flex-direction: column;
 }
+
+mat-card {
+    background-color: #001F3F;
+    color: hsla(210, 100%, 75%, 1.0);
+    font-weight: bold;
+}

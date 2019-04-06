@@ -1,38 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as appStore from '../store';
-import { Store } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-
+import { filter, first } from 'rxjs/operators';
+import { Guid } from 'guid-typescript';
+import * as payloads from '../store/payloads';
+import { MatSelect } from '@angular/material';
 
 @Component({
-  selector: 'app-list-players',
+  selector: 'al-list-players',
   templateUrl: './list-players.component.html',
   styleUrls: ['./list-players.component.scss']
 })
 export class ListPlayersComponent implements OnInit {
+  @ViewChild('matselect') matselect: MatSelect;
   data$: Observable<appStore.AppState>;
-  originalPlayerList: any[] = [];
   playerList: any[] = [];
   playerSelections: any[] = [];
   teamName: string;
+  teamDoc: any;
 
-  constructor(private store$: Store<any>) {
+  constructor(private store$: Store<any>, private as$: ActionsSubject) {
     this.data$ = store$.select(r => r.app);
-    this.data$.pipe(filter(r => r.players != undefined)).subscribe(r => {
-      this.originalPlayerList = [...r.players];
-      this.playerList = [...r.players];
-    });
   }
 
   ngOnInit() {
-    this.store$.dispatch(new appStore.GetPlayers({}));
-    let getTeamsPl = {
-      docType: 'teams',
-      returnAction: appStore.ActionTypes.GetTeamsSuccess
-    } as appStore.GetDocPayload;
+    this.data$.pipe(filter(r => r.players != undefined)).subscribe(r => {
+      this.teamDoc = r.teamDoc;
+      this.refreshData(r);
+    });
 
-    this.store$.dispatch(new appStore.GetDoc(getTeamsPl));
+    this.store$.dispatch(new appStore.GetPlayers({}));
+    this.store$.dispatch(new appStore.GetDoc(payloads.getTeamsPayload));
+  }
+
+  private refreshData(appData: appStore.AppState) {
+    let plyrList = [];
+    appData.players.forEach(player => {
+      if (!appData.playerTeamMap.has(player.id)) {
+        plyrList.push(player);
+      }
+    });
+    this.playerList = plyrList;
+    this.matselect.writeValue(undefined);
   }
 
   createTeam() {
@@ -46,39 +56,32 @@ export class ListPlayersComponent implements OnInit {
       return;
     }
     let players = this.playerSelections.map(r => r.id);
-    let doc = {
-      docType: 'teams',
-      teams: [
-        {
-          players: [...players],
-          name: this.teamName
-        }
-      ]
-    }
-    // this.store$.dispatch(new appStore.SaveDoc(doc));
+    this.teamDoc.teams.push({
+      id: Guid.create().toString(),
+      players: [...players],
+      name: this.teamName
+    });
+    this.store$.dispatch(new appStore.SaveDoc(this.teamDoc));
+    this.as$.pipe(filter(r => r.type == appStore.ActionTypes.UpdateSuccess), first())
+      .subscribe(r => {
+        this.store$.dispatch(new appStore.GetDoc(payloads.getTeamsPayload));
+        this.clearSelections();
+      });
   }
 
   playerSelected(event) {
     if (this.playerSelections.some(r => r.id == event.value)) {
+      this.matselect.writeValue(undefined);
       return;
     }
-    this.playerList.find((el, idx) => {
+    this.playerList.find(el => {
       if (el.id === event.value) {
-        console.log('pushing');
         this.playerSelections.push(el);
-        let thisIdx = idx;
-        setTimeout(() => {
-          console.log(this.playerSelections);
-          this.playerList.splice(thisIdx, 1);
-        }, 100);
         return true;
       }
       return false;
     });
-    // let sliceIndex = this.playerList.findIndex(el => el.id == event.value);
-    // if (sliceIndex > -1) {
-    //   this.playerList.splice(sliceIndex, 1);
-    // }
+    this.matselect.writeValue(undefined);
   }
 
   openedChange(event) {
@@ -87,7 +90,7 @@ export class ListPlayersComponent implements OnInit {
 
   clearSelections() {
     this.playerSelections = [];
-    this.playerList = [...this.originalPlayerList];
     this.teamName = '';
+    this.matselect.writeValue(undefined);
   }
 }

@@ -1,0 +1,9 @@
+<div class="container">
+  <mat-card *ngFor="let team of displayTeams">
+    <p class="mat-body">{{team.teamName}}</p>
+    <p class="mat-body">{{team.names}}</p>
+    <div>
+      <button mat-raised-button color="warn" (click)="delete(team.id)">Delete</button>
+    </div>
+  </mat-card>
+</div>

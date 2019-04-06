@@ -12,8 +12,9 @@ export const initialState = {
     admin: false,
     adminData: undefined,
     players: undefined,
-    teams: [],
-    playerTeamMap: new Map<string, string>()
+    teamDoc: undefined,
+    playerTeamMap: new Map<string, string>(),
+    playerMap: new Map<string, any>()
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
@@ -52,14 +53,18 @@ export function appReducer(state: model.AppState = initialState, action: actions
         }
 
         case ActionTypes.GetPlayersSuccess: {
-            return { ...state, players: action.payload };
+            let newState = { ...state, players: action.payload, playerMap: new Map<string, any>() };
+            newState.players.forEach(player => {
+                if (!newState.playerMap.has(player.id)) {
+                    newState.playerMap.set(player.id, player);
+                }
+            });
+            return newState;
         }
 
         case ActionTypes.GetTeamsSuccess: {
-            let newState = { ...state };
-            let teams = action.payload.teams;
-            newState.teams = teams;
-            teams.forEach(team => {
+            let newState = { ...state, teamDoc: action.payload, playerTeamMap: new Map<string, string>() };
+            newState.teamDoc.teams.forEach(team => {
                 team.players.forEach(player => {
                     if (!newState.playerTeamMap.has(player)) {
                         newState.playerTeamMap.set(player, team.name);
