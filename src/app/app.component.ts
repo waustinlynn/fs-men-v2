@@ -3,6 +3,7 @@ import { Store, ActionsSubject } from '@ngrx/store';
 import * as appStore from './store';
 import { Observable, combineLatest } from 'rxjs';
 import { first, filter, withLatestFrom } from 'rxjs/operators';
+import * as payloads from './store/payloads';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new appStore.GetAdmins({}));
     this.store.dispatch(new appStore.GetUsers({}));
+    this.store.dispatch(new appStore.GetPlayers({}));
+    this.store.dispatch(new appStore.GetDoc(payloads.getTeamsPayload));
 
     //initialize get users
     combineLatest(

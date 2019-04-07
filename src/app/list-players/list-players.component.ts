@@ -29,9 +29,6 @@ export class ListPlayersComponent implements OnInit {
       this.teamDoc = r.teamDoc;
       this.refreshData(r);
     });
-
-    this.store$.dispatch(new appStore.GetPlayers({}));
-    this.store$.dispatch(new appStore.GetDoc(payloads.getTeamsPayload));
   }
 
   private refreshData(appData: appStore.AppState) {
