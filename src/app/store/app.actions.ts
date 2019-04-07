@@ -16,10 +16,22 @@ export enum ActionTypes {
     GetPlayersSuccess = 'GetPlayersSuccess',
     ShowSnackbarError = 'ShowSnackbarError',
     GetTeamsSuccess = 'GetTeamsSuccess',
+    GetDivisions = 'GetDivisions',
+    GetDivisionsSuccess = 'GetDivisionsSuccess',
     GetDoc = 'GetDoc',
     // GetDocSuccess = 'GetDocSuccess',
     GetList = 'GetList',
     // GetListSuccess = 'GetListSuccess'
+}
+
+export class GetDivisions {
+    readonly type = ActionTypes.GetDivisions;
+    constructor(public payload: any) { }
+}
+
+export class GetDivisionsSuccess {
+    readonly type = ActionTypes.GetDivisionsSuccess;
+    constructor(public payload: any) { }
 }
 
 export class GetDoc {
@@ -134,3 +146,5 @@ export type Action = SaveUser
     | GetTeamsSuccess
     | GetDoc
     | GetList
+    | GetDivisionsSuccess
+    | GetDivisions

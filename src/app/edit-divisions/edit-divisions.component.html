@@ -1,3 +1,27 @@
-<p>
-  edit-divisions works!
-</p>
+<div class="row-container">
+  <div class="container-item">
+    <div>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let team of displayTeams" role="listitem">
+          <mat-checkbox [(ngModel)]="team.add">
+            {{team.teamName}} ({{team.names}})
+          </mat-checkbox>
+        </mat-list-item>
+      </mat-list>
+      <mat-form-field>
+        <input matInput placeholder="Division Name" [(ngModel)]="divisionName">
+      </mat-form-field>
+    </div>
+    <button (click)="createDivision()" mat-raised-button color="primary">Create Division</button>
+  </div>
+  <div class="container-item">
+    <mat-card *ngFor="let division of displayDivisions">
+      <div class="mat-h3">{{division.divisionName}}</div>
+      <mat-list role="list">
+        <mat-list-item *ngFor="let team of division.teams" role="listitem">{{team.teamName}} ({{team.names}})</mat-list-item>
+      </mat-list>
+      <button (click)="deleteDivision(division)" mat-raised-button color="warn">Delete Division</button>
+    </mat-card>
+
+  </div>
+</div>

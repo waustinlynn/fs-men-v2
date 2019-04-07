@@ -54,6 +54,14 @@ export class AppEffects {
             })
         )
 
+    @Effect() getDivisions$ = this.actions$
+        .pipe(
+            filter(r => r.type == appStore.ActionTypes.GetDivisions),
+            switchMap((action: any) => {
+                return this.docService.getLatest('division').pipe(map(r => new appStore.GetDivisionsSuccess(r)));
+            })
+        )
+
     @Effect() getDoc$ = this.actions$
         .pipe(
             filter(r => r.type == appStore.ActionTypes.GetDoc),

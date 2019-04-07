@@ -10,6 +10,7 @@ export interface AppState {
     teamDoc: any;
     playerTeamMap: Map<string, string>;
     playerMap: Map<string, any>;
+    divisionDoc: any;
 }
 
 export class GetDocPayload {

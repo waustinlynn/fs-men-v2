@@ -20,3 +20,12 @@ mat-card {
     color: hsla(210, 100%, 75%, 1.0);
     font-weight: bold;
 }
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+// .container-item {
+//     display: flex;
+// }

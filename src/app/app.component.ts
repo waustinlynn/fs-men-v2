@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new appStore.GetAdmins({}));
     this.store.dispatch(new appStore.GetUsers({}));
     this.store.dispatch(new appStore.GetPlayers({}));
-    this.store.dispatch(new appStore.GetDoc(payloads.getTeamsPayload));
+    this.store.dispatch(new appStore.GetDoc({ ...payloads.getTeamsPayload }));
+    this.store.dispatch(new appStore.GetDivisions({}));
 
     //initialize get users
     combineLatest(

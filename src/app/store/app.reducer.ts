@@ -13,6 +13,7 @@ export const initialState = {
     adminData: undefined,
     players: undefined,
     teamDoc: undefined,
+    divisionDoc: undefined,
     playerTeamMap: new Map<string, string>(),
     playerMap: new Map<string, any>()
 } as model.AppState;
@@ -72,6 +73,10 @@ export function appReducer(state: model.AppState = initialState, action: actions
                 })
             });
             return newState;
+        }
+
+        case ActionTypes.GetDivisionsSuccess: {
+            return { ...state, divisionDoc: action.payload };
         }
 
         default:
