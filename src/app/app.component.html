@@ -8,9 +8,10 @@
 <div *ngIf="(storeData$ | async).loggedIn; else login">
     <button mat-button [matMenuTriggerFor]="menu">Menu</button>
     <mat-menu #menu="matMenu">
-        <a href="player" mat-menu-item>Add Player</a>
-        <a href="players" mat-menu-item>Set Teams</a>
-        <a href="divisions" mat-menu-item>Edit Divisions</a>
+        <a href="player" mat-menu-item>Manage Players</a>
+        <a href="players" mat-menu-item>Manage Teams</a>
+        <a href="divisions" mat-menu-item>Manage Divisions</a>
+        <a href="season" mat-menu-item>Manage Season</a>
     </mat-menu>
 </div>
 

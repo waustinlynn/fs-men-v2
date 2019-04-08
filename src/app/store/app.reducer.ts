@@ -14,6 +14,7 @@ export const initialState = {
     players: undefined,
     teamDoc: undefined,
     divisionDoc: undefined,
+    teamMap: new Map<string, any>(),
     playerTeamMap: new Map<string, string>(),
     playerMap: new Map<string, any>()
 } as model.AppState;
@@ -66,6 +67,7 @@ export function appReducer(state: model.AppState = initialState, action: actions
         case ActionTypes.GetTeamsSuccess: {
             let newState = { ...state, teamDoc: action.payload, playerTeamMap: new Map<string, string>() };
             newState.teamDoc.teams.forEach(team => {
+                newState.teamMap.set(team.id, team);
                 team.players.forEach(player => {
                     if (!newState.playerTeamMap.has(player)) {
                         newState.playerTeamMap.set(player, team.name);

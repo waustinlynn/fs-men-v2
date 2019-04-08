@@ -1,0 +1,14 @@
+<div class="flex-container">
+  <mat-form-field>
+    <input matInput placeholder="How Many Matches?" type="number" [(ngModel)]="matchNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Select Division</mat-label>
+    <mat-select #matselect (selectionChange)="divisionSelected($event)">
+      <mat-option *ngFor="let division of divisionList" [value]="division.id">
+        {{division.divisionName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<button mat-raised-button color="primary" (click)="createSchedule()">Create Schedule</button>

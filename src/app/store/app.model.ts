@@ -8,6 +8,7 @@ export interface AppState {
     adminData: any;
     players: any[];
     teamDoc: any;
+    teamMap: Map<string, any>;
     playerTeamMap: Map<string, string>;
     playerMap: Map<string, any>;
     divisionDoc: any;

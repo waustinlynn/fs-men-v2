@@ -21,6 +21,7 @@ import { EditPlayerComponent } from './edit-player/edit-player.component';
 import { ListPlayersComponent } from './list-players/list-players.component';
 import { ListTeamsComponent } from './list-teams/list-teams.component';
 import { EditDivisionsComponent } from './edit-divisions/edit-divisions.component';
+import { SeasonComponent } from './season/season.component';
 
 
 
@@ -30,7 +31,8 @@ import { EditDivisionsComponent } from './edit-divisions/edit-divisions.componen
     EditPlayerComponent,
     ListPlayersComponent,
     ListTeamsComponent,
-    EditDivisionsComponent
+    EditDivisionsComponent,
+    SeasonComponent
   ],
   imports: [
     BrowserModule,

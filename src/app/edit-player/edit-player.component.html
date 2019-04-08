@@ -10,3 +10,15 @@
   </mat-form-field>
 </div>
 <button (click)="save()" mat-raised-button color="primary">Save</button>
+<div class="container">
+  <mat-list role="list">
+    <mat-list-item *ngFor="let player of displayPlayers" role="listitem">
+      <div class="flex-list-container">
+        <div class="flex-list-item">
+          <button (click)="deletePlayer(player)" mat-raised-button color="warn">Delete Player</button>
+        </div>&nbsp;
+        <div class="flex-list-item">{{player.firstName}} {{player.lastName}}</div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
