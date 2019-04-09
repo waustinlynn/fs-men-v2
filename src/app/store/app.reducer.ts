@@ -16,7 +16,8 @@ export const initialState = {
     divisionDoc: undefined,
     teamMap: new Map<string, any>(),
     playerTeamMap: new Map<string, string>(),
-    playerMap: new Map<string, any>()
+    playerMap: new Map<string, any>(),
+    viewSeasonData: undefined
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
@@ -79,6 +80,10 @@ export function appReducer(state: model.AppState = initialState, action: actions
 
         case ActionTypes.GetDivisionsSuccess: {
             return { ...state, divisionDoc: action.payload };
+        }
+
+        case ActionTypes.SetViewSeasonData: {
+            return { ...state, viewSeasonData: action.payload }
         }
 
         default:

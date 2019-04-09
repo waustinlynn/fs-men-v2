@@ -8,6 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
 
 // import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -23,7 +24,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatSnackBarModule,
         MatCardModule,
         MatSelectModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatTableModule
         // DragDropModule
     ],
     exports: [
@@ -35,7 +37,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatSnackBarModule,
         MatCardModule,
         MatSelectModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatTableModule
         // DragDropModule
     ],
     providers: [],

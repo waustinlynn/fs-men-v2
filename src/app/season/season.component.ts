@@ -14,6 +14,8 @@ export class SeasonComponent implements OnInit {
   matchNumber: number;
   divisionList: any[] = [];
   selectedDivisionId: string;
+  teamDoc: any;
+  divisionDoc: any;
 
   appData$: Observable<appStore.AppState>;
 
@@ -24,8 +26,10 @@ export class SeasonComponent implements OnInit {
   ngOnInit() {
     this.appData$.pipe(filter(r => r.divisionDoc != undefined && r.teamDoc != undefined))
       .subscribe(r => {
+        this.teamDoc = r.teamDoc;
+        this.divisionDoc = r.divisionDoc;
         this.divisionList = r.divisionDoc.divisions;
-      })
+      });
   }
 
   divisionSelected(event) {
@@ -46,7 +50,90 @@ export class SeasonComponent implements OnInit {
       matchNumber: this.matchNumber,
       division: this.selectedDivisionId
     }
-    console.log('pl', payload);
+    this.create();
+    // console.log('pl', payload);
+  }
+
+  private create() {
+    //first create a map of the team ids and teams they can play
+    let teamIds = this.divisionDoc.divisions.filter(x => x.id == this.selectedDivisionId)[0].teams;
+    teamIds = teamIds
+      .map(r => {
+        return { id: r, order: Math.random() };
+      })
+      .sort((a: any, b: any) => a.order > b.order ? 1 : -1)
+      .map(r => r.id);
+    let teamAvailOpponentMap = new Map<string, string[]>();
+    [...teamIds].forEach(teamId => {
+      teamAvailOpponentMap.set(teamId, []);
+      [...teamIds].forEach(subTeamId => {
+        if (teamId == subTeamId) return;
+        teamAvailOpponentMap.get(teamId).push(subTeamId);
+      });
+    });
+    let scheduleObj = {};
+    console.log(teamAvailOpponentMap);
+    //loop through each week and create the schedule
+    for (let i = 0; i < this.matchNumber; i++) {
+      scheduleObj[i] = {};
+      let subTeamIds = [...teamIds];
+      while (subTeamIds.length > 1) {
+        let startingLength = subTeamIds.length;
+        let returnData = this.createMatches(scheduleObj[i], subTeamIds, teamAvailOpponentMap);
+        teamAvailOpponentMap = returnData.teamAvailOpponentMap;
+        subTeamIds = returnData.teamIds;
+        if (startingLength == subTeamIds.length) {
+          console.error('could not make matches');
+          break;
+        }
+      }
+    }
+
+    console.log(scheduleObj);
+    this.store$.dispatch(new appStore.SetViewSeasonData(scheduleObj));
+  }
+
+  private createMatches(scheduleObj, teamIds, dataMap) {
+    let idsTemp = [...teamIds];
+    console.log(dataMap);
+    let team = idsTemp[0];
+    let locCounter = 1;
+    while (true) {
+      let teamsMap = dataMap.get(team);
+      let opponentsId = idsTemp[locCounter];
+      let opponentsMap = dataMap.get(opponentsId);
+      let opponentsMapIndex = teamsMap.findIndex(x => x == opponentsId);
+      let teamsMapIndex = opponentsMap.findIndex(x => x == team);
+      console.log('setup data', {
+        teamsMap,
+        opponentsId,
+        opponentsMapIndex,
+        teamsMapIndex,
+        team
+      })
+      if (opponentsMapIndex > -1 && teamsMapIndex > -1) {
+        let teamCombo = `${team}|${opponentsId}`;
+        scheduleObj[teamCombo] = {};
+        idsTemp.splice(locCounter, 1);
+        idsTemp.splice(0, 1);
+        teamsMap.slice(opponentsMapIndex, 1);
+        opponentsMap.splice(opponentsMap.findIndex(x => x == team), 1);
+        dataMap.set(team, teamsMap);
+        dataMap.set(opponentsId, opponentsMap);
+        // console.log('splicedData', {
+        //   teamIds,
+        //   teamsMap
+        // })
+        break;
+      } else {
+        locCounter++;
+        if (locCounter == idsTemp.length) {
+          break;
+        }
+      }
+    }
+    console.log(idsTemp);
+    return { teamIds: idsTemp, teamAvailOpponentMap: dataMap };
   }
 
 }
