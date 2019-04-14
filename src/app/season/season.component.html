@@ -13,3 +13,9 @@
 </div>
 <button mat-raised-button color="primary" (click)="createSchedule()">Create Schedule</button>
 <al-schedule></al-schedule>
+<div *ngIf="(appData$ | async).viewSeasonData">
+  <mat-form-field>
+    <input matInput placeholder="Schedule Name" type="text" [(ngModel)]="scheduleName">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="setSchedule()">Set Schedule</button>
+</div>

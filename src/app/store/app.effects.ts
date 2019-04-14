@@ -73,6 +73,14 @@ export class AppEffects {
             })
         )
 
+    @Effect() getSchedules$ = this.actions$
+        .pipe(
+            filter(r => r.type == appStore.ActionTypes.GetSchedules),
+            switchMap((action: any) => {
+                return this.docService.getAll('schedule').pipe(map(r => new appStore.GetSchedulesSuccess(r)));
+            })
+        )
+
     // @Effect() getTeams$ = this.actions$
     //     .pipe(
     //         filter(r => r.type == appStore.ActionTypes.GetTeams),

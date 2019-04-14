@@ -21,7 +21,19 @@ export enum ActionTypes {
     GetDoc = 'GetDoc',
     SetViewSeasonData = 'SetViewSeasonData',
     GetList = 'GetList',
+    GetSchedules = 'GetSchedules',
+    GetSchedulesSuccess = 'GetSchedulesSuccess'
     // GetListSuccess = 'GetListSuccess'
+}
+
+export class GetSchedulesSuccess {
+    readonly type = ActionTypes.GetSchedulesSuccess;
+    constructor(public payload: any) { }
+}
+
+export class GetSchedules {
+    readonly type = ActionTypes.GetSchedules;
+    constructor(public payload: any) { }
 }
 
 export class SetViewSeasonData {
@@ -154,3 +166,5 @@ export type Action = SaveUser
     | GetDivisionsSuccess
     | GetDivisions
     | SetViewSeasonData
+    | GetSchedules
+    | GetSchedulesSuccess

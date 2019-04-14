@@ -16,10 +16,20 @@
 }
 
 mat-card {
-    background-color: #001F3F;
-    color: hsla(210, 100%, 75%, 1.0);
-    font-weight: bold;
+    background-color: #001F3F !important;
+    color: #ddd !important;
 }
+
+button.mat-primary {
+    background-color: #3D9970 !important;
+    color: #fff !important;
+}
+
+button.mat-warn {
+    color: #fff !important;
+    background-color: #FF4136 !important;
+}
+
 
 .row-container {
     display: flex;

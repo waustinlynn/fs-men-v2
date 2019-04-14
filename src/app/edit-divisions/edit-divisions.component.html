@@ -18,7 +18,7 @@
     <mat-card *ngFor="let division of displayDivisions">
       <div class="mat-h3">{{division.divisionName}}</div>
       <mat-list role="list">
-        <mat-list-item *ngFor="let team of division.teams" role="listitem">{{team.teamName}} ({{team.names}})</mat-list-item>
+        <mat-list-item *ngFor="let team of division.teams" role="listitem" style="color: white;">{{team.teamName}} ({{team.names}})</mat-list-item>
       </mat-list>
       <button (click)="deleteDivision(division)" mat-raised-button color="warn">Delete Division</button>
     </mat-card>

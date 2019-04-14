@@ -23,6 +23,7 @@ import { ListTeamsComponent } from './list-teams/list-teams.component';
 import { EditDivisionsComponent } from './edit-divisions/edit-divisions.component';
 import { SeasonComponent } from './season/season.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 
 
 
@@ -34,7 +35,8 @@ import { ScheduleComponent } from './schedule/schedule.component';
     ListTeamsComponent,
     EditDivisionsComponent,
     SeasonComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    ViewSchedulesComponent
   ],
   imports: [
     BrowserModule,

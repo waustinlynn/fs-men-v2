@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="bg-navy silver">
     <div class="mat-h1 no-marg">Fieldstone Men's League</div>
     <div *ngIf="(storeData$ | async).loggedIn; else login">
         <p *ngIf="(storeData$ | async).loggedIn" class="mat-small no-marg">{{(storeData$ | async).loginData.name}}</p>
@@ -11,7 +11,8 @@
         <a href="player" mat-menu-item>Manage Players</a>
         <a href="players" mat-menu-item>Manage Teams</a>
         <a href="divisions" mat-menu-item>Manage Divisions</a>
-        <a href="season" mat-menu-item>Manage Season</a>
+        <a href="season" mat-menu-item>Create Schedule</a>
+        <a href="standings" mat-menu-item>View Standings</a>
     </mat-menu>
 </div>
 

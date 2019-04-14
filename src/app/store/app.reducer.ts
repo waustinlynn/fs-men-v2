@@ -17,7 +17,8 @@ export const initialState = {
     teamMap: new Map<string, any>(),
     playerTeamMap: new Map<string, string>(),
     playerMap: new Map<string, any>(),
-    viewSeasonData: undefined
+    viewSeasonData: undefined,
+    schedules: undefined
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
@@ -84,6 +85,10 @@ export function appReducer(state: model.AppState = initialState, action: actions
 
         case ActionTypes.SetViewSeasonData: {
             return { ...state, viewSeasonData: action.payload }
+        }
+
+        case ActionTypes.GetSchedulesSuccess: {
+            return { ...state, schedules: action.payload }
         }
 
         default:

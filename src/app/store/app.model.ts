@@ -13,6 +13,7 @@ export interface AppState {
     playerMap: Map<string, any>;
     divisionDoc: any;
     viewSeasonData: any;
+    schedules: any[];
 }
 
 export class GetDocPayload {

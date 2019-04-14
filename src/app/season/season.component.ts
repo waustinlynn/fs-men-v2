@@ -16,6 +16,9 @@ export class SeasonComponent implements OnInit {
   selectedDivisionId: string;
   teamDoc: any;
   divisionDoc: any;
+  viewSeasonData: any;
+  scheduleName: string;
+
 
   appData$: Observable<appStore.AppState>;
 
@@ -29,7 +32,10 @@ export class SeasonComponent implements OnInit {
         this.teamDoc = r.teamDoc;
         this.divisionDoc = r.divisionDoc;
         this.divisionList = r.divisionDoc.divisions;
+        this.viewSeasonData = r.viewSeasonData;
       });
+
+    this.store$.dispatch(new appStore.GetSchedules({}));
   }
 
   divisionSelected(event) {
@@ -95,7 +101,6 @@ export class SeasonComponent implements OnInit {
 
   private createMatches(scheduleObj, teamIds, dataMap) {
     let idsTemp = [...teamIds];
-    console.log(dataMap);
     let team = idsTemp[0];
     let locCounter = 1;
     while (true) {
@@ -104,13 +109,13 @@ export class SeasonComponent implements OnInit {
       let opponentsMap = dataMap.get(opponentsId);
       let opponentsMapIndex = teamsMap.findIndex(x => x == opponentsId);
       let teamsMapIndex = opponentsMap.findIndex(x => x == team);
-      console.log('setup data', {
-        teamsMap,
-        opponentsId,
-        opponentsMapIndex,
-        teamsMapIndex,
-        team
-      })
+      // console.log('setup data', {
+      //   teamsMap,
+      //   opponentsId,
+      //   opponentsMapIndex,
+      //   teamsMapIndex,
+      //   team
+      // })
       if (opponentsMapIndex > -1 && teamsMapIndex > -1) {
         let teamCombo = `${team}|${opponentsId}`;
         scheduleObj[teamCombo] = {};
@@ -132,8 +137,21 @@ export class SeasonComponent implements OnInit {
         }
       }
     }
-    console.log(idsTemp);
     return { teamIds: idsTemp, teamAvailOpponentMap: dataMap };
+  }
+
+  setSchedule() {
+    if (this.scheduleName == undefined || this.scheduleName.length == 0) {
+      this.store$.dispatch(new appStore.ShowSnackbarError({ msg: 'Must Enter Schedule Name' }));
+      return;
+    }
+    let payload = {
+      division: this.selectedDivisionId,
+      schedule: this.viewSeasonData,
+      docType: 'schedule',
+      scheduleName: this.scheduleName
+    }
+    this.store$.dispatch(new appStore.SaveDoc(payload));
   }
 
 }
