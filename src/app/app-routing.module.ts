@@ -6,12 +6,14 @@ import { EditDivisionsComponent } from './edit-divisions/edit-divisions.componen
 import { SeasonComponent } from './season/season.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 
+import { AdminGuard } from './admin.guard';
+
 const routes: Routes = [
-  { path: 'player', component: EditPlayerComponent },
-  { path: 'players', component: ListPlayersComponent },
-  { path: 'divisions', component: EditDivisionsComponent },
-  { path: 'season', component: SeasonComponent },
-  { path: 'standings', component: ViewSchedulesComponent },
+  { path: 'player', component: EditPlayerComponent, canActivate: [AdminGuard] },
+  { path: 'players', component: ListPlayersComponent, canActivate: [AdminGuard] },
+  { path: 'divisions', component: EditDivisionsComponent, canActivate: [AdminGuard] },
+  { path: 'season', component: SeasonComponent, canActivate: [AdminGuard] },
+  { path: 'standings', component: ViewSchedulesComponent, canActivate: [AdminGuard] },
 ];
 
 @NgModule({

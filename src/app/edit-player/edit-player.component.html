@@ -8,6 +8,14 @@
   <mat-form-field>
     <input matInput placeholder="Facility" [(ngModel)]="player.facility">
   </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Linked Account" [(ngModel)]="linkedAccount">
+  </mat-form-field>
+  <button (click)="addLinkedAccount()" style="max-width: 180px;" mat-raised-button color="primary">Add Linked Account</button>
+  <span class="mat-h4">Linked Accounts</span>
+  <div *ngFor="let account of linkedAccounts">
+    <span class="mat-body">{{account}}</span>
+  </div>
 </div>
 <button (click)="save()" mat-raised-button color="primary">Save</button>
 <div class="container">
@@ -15,7 +23,8 @@
     <mat-list-item *ngFor="let player of displayPlayers" role="listitem">
       <div class="flex-list-container">
         <div class="flex-list-item">
-          <button (click)="deletePlayer(player)" mat-raised-button color="warn">Delete Player</button>
+          <!-- <button (click)="deletePlayer(player)" mat-raised-button color="warn">Delete Player</button> -->
+          <button (click)="editPlayer(player)" mat-raised-button color="primary">Edit Player</button>
         </div>&nbsp;
         <div class="flex-list-item">{{player.firstName}} {{player.lastName}}</div>
       </div>

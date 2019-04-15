@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'http://mylist-e1-api.azurewebsites.net/api/'
+  api: 'https://mylist-e1-api.azurewebsites.net/api/'
 };
 
 /*

@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 // import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -25,7 +26,8 @@ import { MatTableModule } from '@angular/material/table';
         MatCardModule,
         MatSelectModule,
         MatCheckboxModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressSpinnerModule
         // DragDropModule
     ],
     exports: [
@@ -38,7 +40,8 @@ import { MatTableModule } from '@angular/material/table';
         MatCardModule,
         MatSelectModule,
         MatCheckboxModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressSpinnerModule
         // DragDropModule
     ],
     providers: [],

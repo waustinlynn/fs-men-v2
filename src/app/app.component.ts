@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   storeData$: Observable<appStore.AppState>;
   storeData: appStore.AppState;
   actionsForSnackbar: string[];
+  displayLabel: string;
 
   constructor(private store: Store<any>, private as$: ActionsSubject) {
     this.storeData$ = store.select(r => r.app);
@@ -29,12 +30,18 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new appStore.GetDoc({ ...payloads.getTeamsPayload }));
     this.store.dispatch(new appStore.GetDivisions({}));
 
-    //initialize get users
     combineLatest(
       this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetUsersSuccess), first()),
-      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLoginData), first()),
       this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetAdminsSuccess), first())
-    ).subscribe(_ => {
+    ).subscribe(r => this.store.dispatch(new appStore.SetLoading(false)));
+
+    //initialize get users
+    combineLatest(
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetUsersSuccess)),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLoginData)),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetAdminsSuccess))
+    ).pipe(first()).subscribe(_ => {
+
       this.store.dispatch(new appStore.SetUserData({}));
       this.as$.pipe(
         filter(r => r.type == appStore.ActionTypes.SetUserData),
@@ -45,10 +52,34 @@ export class AppComponent implements OnInit {
           let pl = { ...storeData.loginData };
           delete pl.id;
           this.store.dispatch(new appStore.SaveUser(pl));
+          this.displayLabel = `${pl.email} - no player linked to account`;
+          this.store.dispatch(new appStore.SetLoading(false));
+        } else {
+          this.setPlayerAdmin();
         }
       })
     });
 
+  }
+
+  private setPlayerAdmin() {
+    let admin = this.storeData.adminData.admins.some(r => r.userId == this.storeData.user.id);
+    this.store.dispatch(new appStore.SetAdmin(admin));
+    this.storeData$.pipe(filter(r => r.players != undefined && r.players.length > 0), first())
+      .subscribe(r => {
+        let user = r.user;
+        this.displayLabel = `${user.email} - no player linked to account`;
+        for (let i = 0; i < r.players.length; i++) {
+          let player = { ...r.players[i] };
+          if (player.accounts == undefined) continue;
+          if (player.accounts.some(r => r == user.email)) {
+            this.store.dispatch(new appStore.SetLinkedPlayer(player));
+            this.displayLabel = `${player.firstName} ${player.lastName}`;
+            break;
+          }
+        }
+        this.store.dispatch(new appStore.SetLoading(false));
+      });
   }
 
   saveAdmin() {

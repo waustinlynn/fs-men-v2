@@ -23,24 +23,45 @@ export class ScheduleComponent implements OnInit {
   }
 
   private refresh(viewSeasonData: any, teamMap: Map<string, any>) {
-    let thisTeamMap = teamMap;
+    let applicableTeams = this.findTeamsInSchedule(viewSeasonData);
+    let thisTeamMap = new Map<string, any>();
+    for (let i = 0; i < applicableTeams.length; i++) {
+      let team = teamMap.get(applicableTeams[i]);
+      thisTeamMap.set(applicableTeams[i], team);
+    }
+    console.log(applicableTeams);
+    console.log(thisTeamMap);
     this.columns = ["name"].concat(Object.keys(viewSeasonData).map(r => `Week ${+r + 1}`));
     let weekObjs = Object.values(viewSeasonData);
     for (let i = 0; i < weekObjs.length; i++) {
-      //object with one object for each match scheduled, each key will have a string with the teams joined with a pipe
+      //object with one object for each match scheduled, each key will be a match guid, value will have team1 and team2 properties
       let weekObj = weekObjs[i];
       let matchKeys = Object.keys(weekObj);
       matchKeys.forEach(key => {
-        let teams = key.split('|');
-        let team1 = thisTeamMap.get(teams[0]);
-        // console.log(team1);
-        let team2 = thisTeamMap.get(teams[1]);
+        let team1 = weekObj[key].team1;
+        let team2 = weekObj[key].team2;
+        team1 = thisTeamMap.get(team1);
+        team2 = thisTeamMap.get(team2);
         team1['Week ' + (i + 1)] = team2.name;
         team2['Week ' + (i + 1)] = team1.name;
       });
     }
     this.scheduleData = Array.from(thisTeamMap.values());
     console.log(this.scheduleData);
+  }
+
+  private findTeamsInSchedule(scheduleData) {
+    let teams = {};
+    for (let weekNum of Object.keys(scheduleData)) {
+      console.log(weekNum);
+      for (let match of Object.keys(scheduleData[weekNum])) {
+        console.log(match);
+        console.log(scheduleData[weekNum][match]);
+        teams[scheduleData[weekNum][match].team1] = undefined;
+        teams[scheduleData[weekNum][match].team2] = undefined;
+      }
+    }
+    return Object.keys(teams);
   }
 
 }

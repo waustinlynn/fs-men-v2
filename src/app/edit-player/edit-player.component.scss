@@ -5,6 +5,7 @@ mat-form-field, .container-item {
 .container {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 }
 
 .flex-list-container {

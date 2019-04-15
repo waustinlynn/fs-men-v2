@@ -22,8 +22,30 @@ export enum ActionTypes {
     SetViewSeasonData = 'SetViewSeasonData',
     GetList = 'GetList',
     GetSchedules = 'GetSchedules',
-    GetSchedulesSuccess = 'GetSchedulesSuccess'
-    // GetListSuccess = 'GetListSuccess'
+    GetSchedulesSuccess = 'GetSchedulesSuccess',
+    SetLoading = 'SetLoading',
+    SetEditingPlayer = 'SetEditingPlayer',
+    SetAdmin = 'SetAdmin',
+    SetLinkedPlayer = 'SetLinkedPlayer',
+}
+
+export class SetLinkedPlayer {
+    readonly type = ActionTypes.SetLinkedPlayer;
+    constructor(public payload: any) { }
+}
+
+export class SetAdmin {
+    readonly type = ActionTypes.SetAdmin;
+    constructor(public payload: any) { }
+}
+export class SetEditingPlayer {
+    readonly type = ActionTypes.SetEditingPlayer;
+    constructor(public payload: any) { }
+}
+
+export class SetLoading {
+    readonly type = ActionTypes.SetLoading;
+    constructor(public payload: any) { }
 }
 
 export class GetSchedulesSuccess {
@@ -168,3 +190,7 @@ export type Action = SaveUser
     | SetViewSeasonData
     | GetSchedules
     | GetSchedulesSuccess
+    | SetLoading
+    | SetEditingPlayer
+    | SetAdmin
+    | SetLinkedPlayer

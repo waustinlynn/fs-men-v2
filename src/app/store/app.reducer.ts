@@ -6,6 +6,7 @@ import * as actions from './app.actions';
 export const initialState = {
     users: [],
     user: undefined,
+    loading: true,
     userMap: undefined,
     loginData: undefined,
     loggedIn: false,
@@ -18,11 +19,17 @@ export const initialState = {
     playerTeamMap: new Map<string, string>(),
     playerMap: new Map<string, any>(),
     viewSeasonData: undefined,
-    schedules: undefined
+    schedules: undefined,
+    editingPlayer: undefined,
+    linkedPlayer: undefined
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
     switch (action.type) {
+        case ActionTypes.SetLoading: {
+            return { ...state, loading: action.payload };
+        }
+
         case ActionTypes.GetUsersSuccess: {
             let newState = { ...state, users: action.payload };
             let um = new Map<string, any>();
@@ -89,6 +96,18 @@ export function appReducer(state: model.AppState = initialState, action: actions
 
         case ActionTypes.GetSchedulesSuccess: {
             return { ...state, schedules: action.payload }
+        }
+
+        case ActionTypes.SetEditingPlayer: {
+            return { ...state, editingPlayer: action.payload }
+        }
+
+        case ActionTypes.SetLinkedPlayer: {
+            return { ...state, linkedPlayer: action.payload }
+        }
+
+        case ActionTypes.SetAdmin: {
+            return { ...state, admin: action.payload }
         }
 
         default:

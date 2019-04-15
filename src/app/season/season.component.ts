@@ -3,6 +3,7 @@ import * as appStore from '../store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-season',
@@ -63,6 +64,8 @@ export class SeasonComponent implements OnInit {
   private create() {
     //first create a map of the team ids and teams they can play
     let teamIds = this.divisionDoc.divisions.filter(x => x.id == this.selectedDivisionId)[0].teams;
+    console.log(teamIds);
+    console.log(this.divisionDoc.divisions);
     teamIds = teamIds
       .map(r => {
         return { id: r, order: Math.random() };
@@ -118,7 +121,11 @@ export class SeasonComponent implements OnInit {
       // })
       if (opponentsMapIndex > -1 && teamsMapIndex > -1) {
         let teamCombo = `${team}|${opponentsId}`;
-        scheduleObj[teamCombo] = {};
+        let guid = Guid.create().toString();
+        scheduleObj[guid] = {
+          team1: team,
+          team2: opponentsId
+        };
         idsTemp.splice(locCounter, 1);
         idsTemp.splice(0, 1);
         teamsMap.slice(opponentsMapIndex, 1);

@@ -1,18 +1,18 @@
 <mat-card class="bg-navy silver">
     <div class="mat-h1 no-marg">Fieldstone Men's League</div>
-    <div *ngIf="(storeData$ | async).loggedIn; else login">
-        <p *ngIf="(storeData$ | async).loggedIn" class="mat-small no-marg">{{(storeData$ | async).loginData.name}}</p>
+    <div *ngIf="(storeData$ | async).loggedIn">
+        <p class="mat-small no-marg">{{displayLabel}}</p>
     </div>
 </mat-card>
 
 <div *ngIf="(storeData$ | async).loggedIn; else login">
     <button mat-button [matMenuTriggerFor]="menu">Menu</button>
     <mat-menu #menu="matMenu">
-        <a href="player" mat-menu-item>Manage Players</a>
-        <a href="players" mat-menu-item>Manage Teams</a>
-        <a href="divisions" mat-menu-item>Manage Divisions</a>
-        <a href="season" mat-menu-item>Create Schedule</a>
-        <a href="standings" mat-menu-item>View Standings</a>
+        <a *ngIf="(storeData$ | async).admin" href="player" mat-menu-item>Manage Players</a>
+        <a *ngIf="(storeData$ | async).admin" href="players" mat-menu-item>Manage Teams</a>
+        <a *ngIf="(storeData$ | async).admin" href="divisions" mat-menu-item>Manage Divisions</a>
+        <a *ngIf="(storeData$ | async).admin" href="season" mat-menu-item>Create Schedule</a>
+        <a *ngIf="(storeData$ | async).admin" href="standings" mat-menu-item>View Standings</a>
     </mat-menu>
 </div>
 
@@ -20,5 +20,10 @@
     <al-login (onSignIn)="onSignIn($event)"></al-login>
 </ng-template>
 <hr />
-<router-outlet></router-outlet>
-<al-snackbar [actions]="actionsForSnackbar"></al-snackbar>
+<div *ngIf="(storeData$ | async).loading; else alcontent">
+    <mat-spinner></mat-spinner>
+</div>
+<ng-template #alcontent>
+    <router-outlet></router-outlet>
+    <al-snackbar [actions]="actionsForSnackbar"></al-snackbar>
+</ng-template>

@@ -1,5 +1,6 @@
 export interface AppState {
     users: any[];
+    loading: boolean;
     user: any;
     userMap: Map<string, any>;
     loginData: any;
@@ -14,6 +15,8 @@ export interface AppState {
     divisionDoc: any;
     viewSeasonData: any;
     schedules: any[];
+    editingPlayer: any;
+    linkedPlayer: any;
 }
 
 export class GetDocPayload {
