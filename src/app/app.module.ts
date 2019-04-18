@@ -24,6 +24,8 @@ import { EditDivisionsComponent } from './edit-divisions/edit-divisions.componen
 import { SeasonComponent } from './season/season.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
+import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
+import { EnterScoreComponent } from './enter-score/enter-score.component';
 
 
 
@@ -36,7 +38,9 @@ import { ViewSchedulesComponent } from './view-schedules/view-schedules.componen
     EditDivisionsComponent,
     SeasonComponent,
     ScheduleComponent,
-    ViewSchedulesComponent
+    ViewSchedulesComponent,
+    TeamScheduleComponent,
+    EnterScoreComponent
   ],
   imports: [
     BrowserModule,

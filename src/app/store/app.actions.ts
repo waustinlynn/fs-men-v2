@@ -27,6 +27,36 @@ export enum ActionTypes {
     SetEditingPlayer = 'SetEditingPlayer',
     SetAdmin = 'SetAdmin',
     SetLinkedPlayer = 'SetLinkedPlayer',
+    SetLinkedTeam = 'SetLinkedTeam',
+    SetTeamsSchedule = 'SetTeamsSchedule',
+    SetupScoreEntryData = 'SetupScoreEntryData',
+    GetScores = 'GetScores',
+    GetScoresSuccess = 'GetScoresSuccess',
+}
+
+export class GetScoresSuccess {
+    readonly type = ActionTypes.GetScoresSuccess;
+    constructor(public payload: any) { }
+}
+
+export class GetScores {
+    readonly type = ActionTypes.GetScores;
+    constructor(public payload: any) { }
+}
+
+export class SetupScoreEntryData {
+    readonly type = ActionTypes.SetupScoreEntryData;
+    constructor(public payload: any) { }
+}
+
+export class SetTeamsSchedule {
+    readonly type = ActionTypes.SetTeamsSchedule;
+    constructor(public payload: any) { }
+}
+
+export class SetLinkedTeam {
+    readonly type = ActionTypes.SetLinkedTeam;
+    constructor(public payload: any) { }
 }
 
 export class SetLinkedPlayer {
@@ -194,3 +224,8 @@ export type Action = SaveUser
     | SetEditingPlayer
     | SetAdmin
     | SetLinkedPlayer
+    | SetLinkedTeam
+    | SetTeamsSchedule
+    | SetupScoreEntryData
+    | GetScores
+    | GetScoresSuccess

@@ -81,6 +81,14 @@ export class AppEffects {
             })
         )
 
+    @Effect() getScores$ = this.actions$
+        .pipe(
+            filter(r => r.type == appStore.ActionTypes.GetScores),
+            switchMap((action: any) => {
+                return this.docService.getAll('score').pipe(map(r => new appStore.GetScoresSuccess(r)));
+            })
+        )
+
     // @Effect() getTeams$ = this.actions$
     //     .pipe(
     //         filter(r => r.type == appStore.ActionTypes.GetTeams),

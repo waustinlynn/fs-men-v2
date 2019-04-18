@@ -17,6 +17,11 @@ export interface AppState {
     schedules: any[];
     editingPlayer: any;
     linkedPlayer: any;
+    linkedTeam: any;
+    teamsSchedule: any;
+    scoreEntryData: any;
+    scores: any[];
+    scoreMap: Map<string, any>;
 }
 
 export class GetDocPayload {

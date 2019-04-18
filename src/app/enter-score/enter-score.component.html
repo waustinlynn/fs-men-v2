@@ -1,0 +1,18 @@
+<div *ngIf="renderEntry">
+  <div class="flex-container">
+    <div class="mat-h3">Opponent: {{opponent.name}}</div>
+    <p class="mat-body">Enter the score from your perspective (i.e. 4-6,4-6 for a loss, 6-4,6-4 for a win)</p>
+    <p class="mat-body">Format must be #-#</p>
+    <mat-form-field>
+      <input matInput placeholder="First Set Score (i.e. 6-4)" (blur)="validate()" [(ngModel)]="score.set1">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Second Set Score (i.e. 4-6)" (blur)="validate()" [(ngModel)]="score.set2">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Third Set Score (i.e. 7-6)" (blur)="validate()" [(ngModel)]="score.set3">
+    </mat-form-field>
+  </div>
+  <p class="mat-body" style="color: red;">{{errorMessage}}</p>
+  <button (click)="save()" mat-raised-button color="primary" [disabled]="errorMessage.length > 0">Post Score</button>
+</div>

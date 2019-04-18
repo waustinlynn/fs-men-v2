@@ -21,7 +21,12 @@ export const initialState = {
     viewSeasonData: undefined,
     schedules: undefined,
     editingPlayer: undefined,
-    linkedPlayer: undefined
+    linkedPlayer: undefined,
+    linkedTeam: undefined,
+    teamsSchedule: undefined,
+    scoreEntryData: undefined,
+    scores: [],
+    scoreMap: new Map<string, any>()
 } as model.AppState;
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
@@ -108,6 +113,68 @@ export function appReducer(state: model.AppState = initialState, action: actions
 
         case ActionTypes.SetAdmin: {
             return { ...state, admin: action.payload }
+        }
+
+        case ActionTypes.SetLinkedTeam: {
+            let newState = { ...state };
+            if (newState.teamDoc == undefined) return newState;
+            for (let i = 0; i < newState.teamDoc.teams.length; i++) {
+                let team = newState.teamDoc.teams[i];
+                for (let j = 0; j < team.players.length; j++) {
+                    let player = team.players[j];
+                    if (player == newState.linkedPlayer.id) {
+                        newState.linkedTeam = team;
+                        return newState;
+                    }
+                }
+            }
+
+            return newState;
+        }
+
+        case ActionTypes.SetTeamsSchedule: {
+            let newState = { ...state };
+            let linkedTeam = { ...newState.linkedTeam };
+            let teamsMatches = {};
+            for (let i = 0; i < newState.schedules.length; i++) {
+                let schedule = { ...newState.schedules[i].schedule };
+                let scheduleKeys = Object.keys(schedule);
+                for (let week of scheduleKeys) {
+                    let weekMatches = { ...schedule[week] };
+                    let weekMatchesKeys = Object.keys(weekMatches);
+                    for (let match of weekMatchesKeys) {
+                        let team1Id = weekMatches[match].team1;
+                        let team2Id = weekMatches[match].team2;
+                        let matchData = {
+                            matchId: match
+                        } as any;
+                        if (team1Id == linkedTeam.id || team2Id == linkedTeam.id) {
+                            if (team1Id == linkedTeam.id) {
+                                matchData.team = newState.teamMap.get(team2Id);
+                                teamsMatches[week] = matchData;
+                            }
+                            if (team2Id == linkedTeam.id) {
+                                matchData.team = newState.teamMap.get(team1Id);
+                                teamsMatches[week] = matchData;
+                            }
+                        }
+                    }
+                }
+            }
+            newState.teamsSchedule = teamsMatches;
+            return newState;
+        }
+
+        case ActionTypes.SetupScoreEntryData: {
+            return { ...state, scoreEntryData: action.payload }
+        }
+
+        case ActionTypes.GetScoresSuccess: {
+            let newState = { ...state, scores: action.payload };
+            for (let score of newState.scores) {
+                newState.scoreMap.set(score.matchId, score);
+            }
+            return newState;
         }
 
         default:

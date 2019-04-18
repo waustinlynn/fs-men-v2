@@ -24,16 +24,26 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    //initialize the calls for all the data
     this.store.dispatch(new appStore.GetAdmins({}));
     this.store.dispatch(new appStore.GetUsers({}));
     this.store.dispatch(new appStore.GetPlayers({}));
     this.store.dispatch(new appStore.GetDoc({ ...payloads.getTeamsPayload }));
     this.store.dispatch(new appStore.GetDivisions({}));
+    this.store.dispatch(new appStore.GetSchedules({}));
+    this.store.dispatch(new appStore.GetScores({}));
 
+    //disable loading once we have received users and admins
     combineLatest(
       this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetUsersSuccess), first()),
       this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetAdminsSuccess), first())
     ).subscribe(r => this.store.dispatch(new appStore.SetLoading(false)));
+
+    //listen for a linked player and for teams to be set, then associate the linked player with their team
+    combineLatest(
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLinkedPlayer)),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetTeamsSuccess))
+    ).pipe(first()).subscribe(r => this.store.dispatch(new appStore.SetLinkedTeam({})));
 
     //initialize get users
     combineLatest(
@@ -59,6 +69,12 @@ export class AppComponent implements OnInit {
         }
       })
     });
+
+    //listen to set team's schedule
+    combineLatest(
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.SetLinkedTeam)),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetSchedulesSuccess))
+    ).pipe(first()).subscribe(r => this.store.dispatch(new appStore.SetTeamsSchedule({})));
 
   }
 
