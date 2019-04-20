@@ -26,6 +26,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { EnterScoreComponent } from './enter-score/enter-score.component';
+import { MatchDisplayComponent } from './match-display/match-display.component';
 
 
 
@@ -40,7 +41,8 @@ import { EnterScoreComponent } from './enter-score/enter-score.component';
     ScheduleComponent,
     ViewSchedulesComponent,
     TeamScheduleComponent,
-    EnterScoreComponent
+    EnterScoreComponent,
+    MatchDisplayComponent
   ],
   imports: [
     BrowserModule,

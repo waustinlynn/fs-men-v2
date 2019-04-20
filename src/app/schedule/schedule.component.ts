@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import * as appStore from '../store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { getBlankStats } from '../store/app.reducer';
 
 @Component({
   selector: 'al-schedule',
@@ -18,20 +19,21 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appData$.pipe(filter(r => r.viewSeasonData != undefined))
-      .subscribe(r => this.refresh(r.viewSeasonData, r.teamMap));
+    this.store$.dispatch(new appStore.SetTeamStats({}));
+    this.appData$.pipe(filter(r => r.viewSeasonData != undefined && r.teamMap.size > 0 && r.teamsToMatchIdMap.size > 0))
+      .subscribe(r => {
+        this.refresh(r.viewSeasonData, r.teamMap, r.scoreMap, r.teamsToMatchIdMap, r.teamStats);
+      });
   }
 
-  private refresh(viewSeasonData: any, teamMap: Map<string, any>) {
+  private refresh(viewSeasonData: any, teamMap: Map<string, any>, scoreMap: Map<string, any>, teamsToMatchMap: Map<string, string>, teamStats: any) {
     let applicableTeams = this.findTeamsInSchedule(viewSeasonData);
     let thisTeamMap = new Map<string, any>();
     for (let i = 0; i < applicableTeams.length; i++) {
       let team = teamMap.get(applicableTeams[i]);
       thisTeamMap.set(applicableTeams[i], team);
     }
-    console.log(applicableTeams);
-    console.log(thisTeamMap);
-    this.columns = ["name"].concat(Object.keys(viewSeasonData).map(r => `Week ${+r + 1}`));
+    this.columns = this.setColumns(viewSeasonData);
     let weekObjs = Object.values(viewSeasonData);
     for (let i = 0; i < weekObjs.length; i++) {
       //object with one object for each match scheduled, each key will be a match guid, value will have team1 and team2 properties
@@ -42,21 +44,65 @@ export class ScheduleComponent implements OnInit {
         let team2 = weekObj[key].team2;
         team1 = thisTeamMap.get(team1);
         team2 = thisTeamMap.get(team2);
-        team1['Week ' + (i + 1)] = team2.name;
-        team2['Week ' + (i + 1)] = team1.name;
+
+        team1['Week ' + (i + 1)] = {
+          opponentName: team2.name,
+          opponentId: team2.id,
+          team: team1
+        };
+        team2['Week ' + (i + 1)] = {
+          opponentName: team1.name,
+          opponentId: team1.id,
+          team: team2
+        };
+
+        //lookup score data
+        let matchLookupKey = `${team1.id}|${team2.id}`;
+        let matchId = teamsToMatchMap.get(matchLookupKey);
+        let score = scoreMap.get(matchId);
+        if (score != undefined) {
+          team1['Week ' + (i + 1)].score = score;
+          team2['Week ' + (i + 1)].score = score;
+        }
       });
     }
-    this.scheduleData = Array.from(thisTeamMap.values());
+    let theseStats = teamStats;
+    this.scheduleData = Array.from(thisTeamMap.values()).map(el => {
+      let stats = theseStats[el.id];
+      if (stats == undefined) stats = getBlankStats();
+      return { ...el, Name: { name: el.name }, stats }
+    }).sort(this.sort);
     console.log(this.scheduleData);
+  }
+
+  private sort(a: any, b: any) {
+    if (a.stats.points == b.stats.points) {
+      return a.stats.pct > b.stats.pct ? -1 : 1;
+    }
+    return a.stats.points > b.stats.points ? -1 : 1;
+  }
+
+  private setColumns(viewSeasonData) {
+    //unfortunately, this doesn't work
+    // return [
+    //   {
+    //     header: 'Name',
+    //     field: 'name'
+    //   }
+    // ].concat(Object.keys(viewSeasonData).map(r => {
+    //   return {
+    //     header: `Week ${+r + 1}`,
+    //     field: `Week ${+r + 1}`
+    //   }
+    // }));
+
+    return ["Name", "Record", "Points", "Win%"].concat(Object.keys(viewSeasonData).map(r => `Week ${+r + 1}`));
   }
 
   private findTeamsInSchedule(scheduleData) {
     let teams = {};
     for (let weekNum of Object.keys(scheduleData)) {
-      console.log(weekNum);
       for (let match of Object.keys(scheduleData[weekNum])) {
-        console.log(match);
-        console.log(scheduleData[weekNum][match]);
         teams[scheduleData[weekNum][match].team1] = undefined;
         teams[scheduleData[weekNum][match].team2] = undefined;
       }

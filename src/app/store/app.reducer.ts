@@ -26,8 +26,18 @@ export const initialState = {
     teamsSchedule: undefined,
     scoreEntryData: undefined,
     scores: [],
-    scoreMap: new Map<string, any>()
+    scoreMap: new Map<string, any>(),
+    teamsToMatchIdMap: new Map<string, string>(),
+    teamStats: undefined
 } as model.AppState;
+
+function initTeam(dataObj, teamId) {
+    dataObj[teamId] = getBlankStats();
+}
+
+export function getBlankStats() {
+    return { wins: 0, losses: 0, gamesWon: 0, gamesPlayed: 0, points: 0, pct: 0.00 } as any;
+}
 
 export function appReducer(state: model.AppState = initialState, action: actions.Action) {
     switch (action.type) {
@@ -100,7 +110,25 @@ export function appReducer(state: model.AppState = initialState, action: actions
         }
 
         case ActionTypes.GetSchedulesSuccess: {
-            return { ...state, schedules: action.payload }
+            //setup teamsToMatchIdMap
+            let newState = { ...state, schedules: action.payload }
+
+            for (let schedule of action.payload) {
+                let schedObj = { ...schedule }.schedule;
+                let weeks = Object.keys(schedObj);
+                weeks.forEach(week => {
+                    let matchObj = { ...schedObj[week] };
+                    let matchIds = Object.keys(matchObj);
+                    matchIds.forEach(matchId => {
+                        let teamId = `${matchObj[matchId].team1}|${matchObj[matchId].team2}`;
+                        newState.teamsToMatchIdMap.set(teamId, matchId);
+                        teamId = `${matchObj[matchId].team2}|${matchObj[matchId].team1}`;
+                        newState.teamsToMatchIdMap.set(teamId, matchId);
+                    })
+                })
+            }
+
+            return newState;
         }
 
         case ActionTypes.SetEditingPlayer: {
@@ -174,6 +202,43 @@ export function appReducer(state: model.AppState = initialState, action: actions
             for (let score of newState.scores) {
                 newState.scoreMap.set(score.matchId, score);
             }
+            return newState;
+        }
+
+        case ActionTypes.SetTeamStats: {
+            if (state.scores.length == 0 || state.teamMap.size == 0) {
+                return { ...state, teamStats: {} };
+            }
+            let newState = { ...state };
+            let data = {} as any;
+            for (let score of newState.scores) {
+                let team = score.usersTeamId;
+                let opponent = score.opponentId;
+                if (data[team] == undefined) {
+                    initTeam(data, team);
+                }
+                if (data[opponent] == undefined) {
+                    initTeam(data, opponent);
+                }
+                if (team == score.winner) {
+                    data[team].wins++;
+                    data[opponent].losses++;
+                } else {
+                    data[team].losses++;
+                    data[opponent].wins++;
+                }
+                data[team].gamesWon += score.games[team];
+                data[team].gamesPlayed += (score.games[team] + score.games[opponent]);
+                data[opponent].gamesWon += score.games[opponent];
+                data[opponent].gamesPlayed += (score.games[team] + score.games[opponent]);
+                data[team].points += score.usersSetsWon;
+                data[opponent].points += score.opponentsSetsWon;
+            }
+            for (let teamId of Object.keys(data)) {
+                data[teamId].pct = data[teamId].gamesWon / data[teamId].gamesPlayed;
+            }
+            console.log(data);
+            newState.teamStats = data;
             return newState;
         }
 

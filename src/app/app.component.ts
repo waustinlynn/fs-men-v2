@@ -76,6 +76,12 @@ export class AppComponent implements OnInit {
       this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetSchedulesSuccess))
     ).pipe(first()).subscribe(r => this.store.dispatch(new appStore.SetTeamsSchedule({})));
 
+    //listen to setup team stats for schedule
+    combineLatest(
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetTeamsSuccess)),
+      this.as$.pipe(filter(r => r.type == appStore.ActionTypes.GetScoresSuccess))
+    ).pipe(first()).subscribe(r => this.store.dispatch(new appStore.SetTeamStats({})));
+
   }
 
   private setPlayerAdmin() {

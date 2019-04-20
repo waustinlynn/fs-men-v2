@@ -33,3 +33,10 @@ export function divisionsToDisplayDivisions(divisions, dispTeams) {
     });
     return dispDivisions;
 }
+
+export function reverseScore(score) {
+    return score.split(',').map(el => {
+        let gameCounts = el.split('-');
+        return `${gameCounts[1]}-${gameCounts[0]}`;
+    }).join(',');
+}

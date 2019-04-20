@@ -32,6 +32,12 @@ export enum ActionTypes {
     SetupScoreEntryData = 'SetupScoreEntryData',
     GetScores = 'GetScores',
     GetScoresSuccess = 'GetScoresSuccess',
+    SetTeamStats = 'SetTeamStats',
+}
+
+export class SetTeamStats {
+    readonly type = ActionTypes.SetTeamStats;
+    constructor(public payload) { }
 }
 
 export class GetScoresSuccess {
@@ -229,3 +235,4 @@ export type Action = SaveUser
     | SetupScoreEntryData
     | GetScores
     | GetScoresSuccess
+    | SetTeamStats

@@ -1,6 +1,6 @@
 <mat-form-field>
-  <mat-label>Select Schedule</mat-label>
-  <mat-select #matselect (selectionChange)="scheduleSelected($event)">
+  <mat-label>Select Division</mat-label>
+  <mat-select #matselect (selectionChange)="scheduleSelected($event)" [(ngModel)]="selectedSchedule">
     <mat-option *ngFor="let schedule of schedules" [value]="schedule.id">
       {{schedule.scheduleName}}
     </mat-option>

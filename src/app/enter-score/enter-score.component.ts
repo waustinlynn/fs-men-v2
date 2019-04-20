@@ -89,6 +89,7 @@ export class EnterScoreComponent implements OnInit {
       return;
     }
     scoreData.winner = scoreData.usersSetsWon > scoreData.opponentsSetsWon ? this.usersTeam.id : this.opponent.id;
+    scoreData.opponentId = this.opponent.id;
     scoreData.games = {} as any;
     scoreData.games[this.usersTeam.id] = scoreData.usersGamesWon;
     scoreData.games[this.opponent.id] = scoreData.opponentsGamesWon;
