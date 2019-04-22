@@ -14,16 +14,26 @@ export class ScheduleComponent implements OnInit {
   appData$: Observable<appStore.AppState>;
   scheduleData: any;
   columns: any[];
+  matchMap: Map<string, any>;
   constructor(private store$: Store<any>) {
     this.appData$ = store$.select(r => r.app);
   }
 
   ngOnInit() {
     this.store$.dispatch(new appStore.SetTeamStats({}));
-    this.appData$.pipe(filter(r => r.viewSeasonData != undefined && r.teamMap.size > 0 && r.teamsToMatchIdMap.size > 0))
+    this.appData$.pipe(filter(r => r.viewSeasonData != undefined && r.teamMap.size > 0 && r.teamsToMatchIdMap.size > 0 && r.matchMap.size > 0))
       .subscribe(r => {
+        this.matchMap = r.matchMap;
         this.refresh(r.viewSeasonData, r.teamMap, r.scoreMap, r.teamsToMatchIdMap, r.teamStats);
       });
+  }
+
+  private isHome(homeTeam, matchId) {
+    let match = this.matchMap.get(matchId);
+    if (match.home != undefined) {
+      if (match.home == homeTeam) return true;
+    }
+    return false;
   }
 
   private refresh(viewSeasonData: any, teamMap: Map<string, any>, scoreMap: Map<string, any>, teamsToMatchMap: Map<string, string>, teamStats: any) {
@@ -48,12 +58,14 @@ export class ScheduleComponent implements OnInit {
         team1['Week ' + (i + 1)] = {
           opponentName: team2.name,
           opponentId: team2.id,
-          team: team1
+          team: team1,
+          home: this.isHome(team1.id, key)
         };
         team2['Week ' + (i + 1)] = {
           opponentName: team1.name,
           opponentId: team1.id,
-          team: team2
+          team: team2,
+          home: this.isHome(team2.id, key)
         };
 
         //lookup score data

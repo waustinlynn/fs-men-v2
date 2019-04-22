@@ -11,6 +11,7 @@ export class MatchDisplayComponent implements OnInit, OnChanges {
   displayLabel: string;
   className: string;
   styleName: string;
+  homeMatch: boolean = false;
   @Input() data: any;
   @Input() column: any;
   constructor() { }
@@ -40,6 +41,9 @@ export class MatchDisplayComponent implements OnInit, OnChanges {
       default: break;
     }
     let itemData = { ...this.data[this.column] };
+    if (itemData.home != undefined) {
+      this.homeMatch = itemData.home;
+    }
     let score = itemData.score;
     if (score != undefined) {
       let displayScore = score.score;

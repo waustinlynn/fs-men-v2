@@ -7,6 +7,7 @@ import { SeasonComponent } from './season/season.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { EnterScoreComponent } from './enter-score/enter-score.component';
+import { SetHomeComponent } from './set-home/set-home.component';
 
 import { AdminGuard } from './admin.guard';
 import { UserGuard } from './user.guard';
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'players', component: ListPlayersComponent, canActivate: [AdminGuard] },
   { path: 'divisions', component: EditDivisionsComponent, canActivate: [AdminGuard] },
   { path: 'season', component: SeasonComponent, canActivate: [AdminGuard] },
-  { path: 'standings', component: ViewSchedulesComponent, canActivate: [AdminGuard] },
+  { path: 'standings', component: ViewSchedulesComponent },
+  { path: 'sethome', component: SetHomeComponent, canActivate: [AdminGuard] },
 ];
 
 @NgModule({

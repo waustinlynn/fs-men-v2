@@ -28,7 +28,8 @@ export const initialState = {
     scores: [],
     scoreMap: new Map<string, any>(),
     teamsToMatchIdMap: new Map<string, string>(),
-    teamStats: undefined
+    teamStats: undefined,
+    matchMap: new Map<string, any>()
 } as model.AppState;
 
 function initTeam(dataObj, teamId) {
@@ -120,6 +121,7 @@ export function appReducer(state: model.AppState = initialState, action: actions
                     let matchObj = { ...schedObj[week] };
                     let matchIds = Object.keys(matchObj);
                     matchIds.forEach(matchId => {
+                        newState.matchMap.set(matchId, matchObj[matchId]);
                         let teamId = `${matchObj[matchId].team1}|${matchObj[matchId].team2}`;
                         newState.teamsToMatchIdMap.set(teamId, matchId);
                         teamId = `${matchObj[matchId].team2}|${matchObj[matchId].team1}`;

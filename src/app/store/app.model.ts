@@ -24,6 +24,7 @@ export interface AppState {
     scoreMap: Map<string, any>;
     teamsToMatchIdMap: Map<string, string>;
     teamStats: any;
+    matchMap: Map<string, any>;
 }
 
 export class GetDocPayload {
