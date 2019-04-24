@@ -14,6 +14,7 @@ export class ViewSchedulesComponent implements OnInit {
   schedules: any[];
   scheduleOptions: any[];
   selectedSchedule: string;
+  linkedTeamId: string;
   constructor(private store$: Store<any>) {
     this.appData$ = store$.select(r => r.app);
   }
@@ -23,9 +24,33 @@ export class ViewSchedulesComponent implements OnInit {
       .subscribe(r => {
         this.schedules = r.schedules;
         this.selectedSchedule = this.schedules[0].id;
+        this.checkSetTeamsSchedule();
         this.scheduleSelected({ value: this.selectedSchedule });
       });
     this.store$.dispatch(new appStore.GetSchedules({}));
+    this.appData$.pipe(filter(r => r.linkedTeam != undefined), first())
+      .subscribe(r => {
+        this.linkedTeamId = r.linkedTeam.id;
+        this.checkSetTeamsSchedule();
+      })
+  }
+
+  private checkSetTeamsSchedule() {
+    if (this.linkedTeamId == undefined || this.selectedSchedule == undefined) return;
+
+    for (let i = 0; i < this.schedules.length; i++) {
+      let foundSched = false;
+      let week1MatchIds = Object.keys(this.schedules[i].schedule['0']);
+      for (let j = 0; j < week1MatchIds.length; j++) {
+        if (this.schedules[i].schedule['0'][week1MatchIds[j]].team1 == this.linkedTeamId) {
+          this.scheduleSelected({ value: this.schedules[i].id });
+          this.selectedSchedule = this.schedules[i].id;
+          foundSched = true;
+          break;
+        }
+      }
+      if (foundSched) break;
+    }
   }
 
   scheduleSelected(event) {

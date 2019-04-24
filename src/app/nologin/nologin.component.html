@@ -1,0 +1,20 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Fieldstone Men's League</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image src="../../assets/red_white_raquet.jpg" alt="Tennis">
+  <mat-card-content>
+    <p>
+      Welcome to the Fieldstone Men's Tennis League. In order to view contact information and post scores, you must login with
+      a Google account. If you registered for the league using your gmail account as your email address, your Google account
+      should already be linked to the site. If you are able to login, but see a message at the top stating 'no player linked
+      to account', please send an
+      <a href="mailto:waustinlynn@gmail.com">email</a> with your name and gmail account to be linked. You will recieve a confirmation reply once your account has
+      been linked.
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <al-login (onSignIn)="onSignIn($event)"></al-login>&nbsp;
+    <button mat-button (click)="showStandings()">Standings</button>
+  </mat-card-actions>
+</mat-card>

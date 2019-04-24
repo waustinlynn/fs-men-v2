@@ -1,0 +1,24 @@
+<mat-form-field>
+  <mat-label>Select Division</mat-label>
+  <mat-select #matselect (selectionChange)="scheduleSelected($event)" [(ngModel)]="selectedSchedule">
+    <mat-option *ngFor="let schedule of schedules" [value]="schedule.id">
+      {{schedule.scheduleName}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<hr />
+<mat-card *ngFor="let sched of scheduleOptions">
+  <mat-card-title>{{sched.week}}</mat-card-title>
+  <mat-card-content>
+    <p>Set Home</p>
+    <div class="mat-body" *ngFor="let match of sched.matches">
+      <div *ngIf="match.home != undefined; else nohome">
+        Home: {{teamLookup(match.home)}}
+      </div>
+      <ng-template #nohome>
+        <button (click)="setHome(sched.weekNum, match.id, match.team1)">{{teamLookup(match.team1)}}</button>
+        <button (click)="setHome(sched.weekNum, match.id, match.team2)">{{teamLookup(match.team2)}}</button>
+      </ng-template>
+    </div>
+  </mat-card-content>
+</mat-card>

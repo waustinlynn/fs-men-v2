@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivate, Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import * as appStore from './store';

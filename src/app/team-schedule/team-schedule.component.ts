@@ -17,6 +17,8 @@ export class TeamScheduleComponent implements OnInit {
   scoreMap: Map<string, any>;
   playerMap: Map<string, any>;
   matchMap: Map<string, any>;
+  players: any[] = []
+  teamData: any;
   constructor(private store$: Store<any>, private router: Router) {
     this.appData$ = store$.select(r => r.app);
   }
@@ -30,9 +32,18 @@ export class TeamScheduleComponent implements OnInit {
       }
       this.playerMap = r.playerMap;
       this.matchMap = r.matchMap;
+      this.teamData = r.linkedTeam;
       this.setSchedule(r.teamsSchedule);
+      this.setPlayers();
     })
 
+  }
+
+  private setPlayers() {
+    this.players = [];
+    this.teamData.players.forEach(playerId => {
+      this.players.push(this.playerMap.get(playerId));
+    });
   }
 
   private setSchedule(teamSchedule) {
@@ -55,7 +66,6 @@ export class TeamScheduleComponent implements OnInit {
       sched.push(schedData);
     }
     this.teamSchedule = sched;
-    console.log(this.teamSchedule);
   }
 
   postScore(team) {

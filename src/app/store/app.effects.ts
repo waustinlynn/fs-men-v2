@@ -5,6 +5,7 @@ import { EMPTY } from 'rxjs';
 import { map, mergeMap, withLatestFrom, first, switchMap, filter } from 'rxjs/operators';
 import { DocService } from '../doc.service';
 import * as appStore from './';
+import * as env from '../../environments/environment';
 
 @Injectable()
 export class AppEffects {
@@ -12,7 +13,11 @@ export class AppEffects {
     @Effect({ dispatch: false })
     logIt$ = this.actions$
         .pipe(withLatestFrom(this.store$.select(r => r)),
-            map(store => console.log('store', store)));
+            map(store => {
+                if (!env.environment.production) {
+                    console.log('store', store)
+                }
+            }));
 
     @Effect()
     saveUser$ = this.actions$

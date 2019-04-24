@@ -1,30 +1,41 @@
-<div class="mat-h3">Schedule:</div>
-<mat-card class="example-card" [ngClass]="{'winner': matchData.winner, 'loser': matchData.loser}" *ngFor="let matchData of teamSchedule">
-  <mat-card-header>
-    <mat-card-title>Week {{matchData.week}}: {{matchData.team.name}}</mat-card-title>
-  </mat-card-header>
-  <mat-card-subtitle>
-    <p style="color: white;">{{matchData.opponent1.firstName}} {{matchData.opponent1.lastName}} ({{matchData.opponent1.phone}} | {{matchData.opponent1.email}})</p>
-    <p style="color: white;">{{matchData.opponent2.firstName}} {{matchData.opponent2.lastName}} ({{matchData.opponent2.phone}} | {{matchData.opponent2.email}})</p>
-  </mat-card-subtitle>
+<mat-card class="example-card">
+  <mat-card-title>Team Info</mat-card-title>
   <mat-card-content>
-
-    <div *ngIf="matchData.score; else noscore">
-      <p>
-        Score: {{matchData.score}}
-      </p>
+    <div class="team-info" *ngFor="let player of players">
+      {{player.firstName}} {{player.lastName}}
+      <br /> {{player.phone}} | {{player.email}}
     </div>
-    <ng-template #noscore>
-      <p>
-        Score: NOT ENTERED
-      </p>
-    </ng-template>
-    <div *ngIf="matchData.home" style="margin-right: 5px;">
-      <i class="fas fa-home"></i>
-    </div>
-
   </mat-card-content>
-  <mat-card-actions *ngIf="!matchData.score">
-    <button mat-raised-button color="primary" (click)="postScore(matchData)">POST SCORE</button>
-  </mat-card-actions>
 </mat-card>
+<hr />
+<div class="mat-h3">Schedule:</div>
+<div class="flex">
+  <mat-card class="example-card" [ngClass]="{'winner': matchData.winner, 'loser': matchData.loser}" *ngFor="let matchData of teamSchedule">
+    <mat-card-header>
+      <mat-card-title>Week {{matchData.week}}: {{matchData.team.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-subtitle>
+      <p style="color: white;">{{matchData.opponent1.firstName}} {{matchData.opponent1.lastName}} ({{matchData.opponent1.phone}} | {{matchData.opponent1.email}})</p>
+      <p style="color: white;">{{matchData.opponent2.firstName}} {{matchData.opponent2.lastName}} ({{matchData.opponent2.phone}} | {{matchData.opponent2.email}})</p>
+    </mat-card-subtitle>
+    <mat-card-content>
+
+      <div *ngIf="matchData.score; else noscore">
+        <p>
+          Score: {{matchData.score}}
+        </p>
+      </div>
+      <ng-template #noscore>
+        <p>
+          Score: NOT ENTERED
+        </p>
+      </ng-template>
+      <div *ngIf="matchData.home" style="margin-right: 5px;">
+        <i class="fas fa-home"></i>
+      </div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="!matchData.score">
+      <button mat-raised-button color="primary" (click)="postScore(matchData)">POST SCORE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

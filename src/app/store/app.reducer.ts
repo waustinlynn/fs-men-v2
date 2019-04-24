@@ -74,8 +74,9 @@ export function appReducer(state: model.AppState = initialState, action: actions
 
         case ActionTypes.SetUserData: {
             let newState = { ...state };
-            newState.user = state.users.find(r => r.email == state.loginData.email);
-
+            if (state.loginData != undefined) {
+                newState.user = state.users.find(r => r.email == state.loginData.email);
+            }
             return newState;
         }
 
@@ -239,7 +240,6 @@ export function appReducer(state: model.AppState = initialState, action: actions
             for (let teamId of Object.keys(data)) {
                 data[teamId].pct = data[teamId].gamesWon / data[teamId].gamesPlayed;
             }
-            console.log(data);
             newState.teamStats = data;
             return newState;
         }

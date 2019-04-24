@@ -31,6 +31,7 @@ export class AlLoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.socialAuthService.authState.pipe(filter(r => r == null)).subscribe(r => this.onSignIn.emit(undefined));
     this.socialAuthService.authState.pipe(filter(r => r != undefined && r != null), first())
       .subscribe(r => {
         this.onSignIn.emit(r);

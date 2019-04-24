@@ -84,7 +84,6 @@ export class ScheduleComponent implements OnInit {
       if (stats == undefined) stats = getBlankStats();
       return { ...el, Name: { name: el.name }, stats }
     }).sort(this.sort);
-    console.log(this.scheduleData);
   }
 
   private sort(a: any, b: any) {

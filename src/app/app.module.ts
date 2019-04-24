@@ -28,6 +28,8 @@ import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { EnterScoreComponent } from './enter-score/enter-score.component';
 import { MatchDisplayComponent } from './match-display/match-display.component';
 import { SetHomeComponent } from './set-home/set-home.component';
+import { RulesComponent } from './rules/rules.component';
+import { NologinComponent } from './nologin/nologin.component';
 
 
 
@@ -44,7 +46,9 @@ import { SetHomeComponent } from './set-home/set-home.component';
     TeamScheduleComponent,
     EnterScoreComponent,
     MatchDisplayComponent,
-    SetHomeComponent
+    SetHomeComponent,
+    RulesComponent,
+    NologinComponent
   ],
   imports: [
     BrowserModule,
