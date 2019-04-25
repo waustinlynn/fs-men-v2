@@ -4,6 +4,7 @@ import * as appStore from '../store';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { getBlankStats } from '../store/app.reducer';
+import { dateRangeMap } from '../store/helpers';
 
 @Component({
   selector: 'al-schedule',
@@ -18,16 +19,7 @@ export class ScheduleComponent implements OnInit {
   dateRangeMap: any;
   constructor(private store$: Store<any>) {
     this.appData$ = store$.select(r => r.app);
-    this.dateRangeMap = {
-      'Week 1': '5/5-5/11',
-      'Week 2': '5/12-5/18',
-      'Week 3': '5/19-5/25',
-      'Week 4': '5/26-6/1',
-      'Week 5': '6/2-6/8',
-      'Week 6': '6/9-6/15',
-      'Week 7': '6/16-6/22',
-      'Week 8': '6/23-6/29'
-    } as any;
+    this.dateRangeMap = { ...dateRangeMap };
   }
 
   ngOnInit() {

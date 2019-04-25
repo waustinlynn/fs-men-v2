@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import * as appStore from '../store';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { dateRangeMap } from '../store/helpers';
 
 @Component({
   selector: 'al-team-schedule',
@@ -19,8 +20,10 @@ export class TeamScheduleComponent implements OnInit {
   matchMap: Map<string, any>;
   players: any[] = []
   teamData: any;
+  dateRangeMap: any;
   constructor(private store$: Store<any>, private router: Router) {
     this.appData$ = store$.select(r => r.app);
+    this.dateRangeMap = { ...dateRangeMap };
   }
 
   ngOnInit() {

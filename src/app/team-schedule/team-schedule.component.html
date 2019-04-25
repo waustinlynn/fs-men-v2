@@ -11,9 +11,8 @@
 <div class="mat-h3">Schedule:</div>
 <div class="flex">
   <mat-card class="example-card" [ngClass]="{'winner': matchData.winner, 'loser': matchData.loser}" *ngFor="let matchData of teamSchedule">
-    <mat-card-header>
-      <mat-card-title>Week {{matchData.week}}: {{matchData.team.name}}</mat-card-title>
-    </mat-card-header>
+    <mat-card-title>Week {{matchData.week}}: {{matchData.team.name}}</mat-card-title>
+    <mat-card-subtitle style="color: white;">{{dateRangeMap['Week ' + matchData.week]}}</mat-card-subtitle>
     <mat-card-subtitle>
       <p style="color: white;">{{matchData.opponent1.firstName}} {{matchData.opponent1.lastName}} ({{matchData.opponent1.phone}} | {{matchData.opponent1.email}})</p>
       <p style="color: white;">{{matchData.opponent2.firstName}} {{matchData.opponent2.lastName}} ({{matchData.opponent2.phone}} | {{matchData.opponent2.email}})</p>
