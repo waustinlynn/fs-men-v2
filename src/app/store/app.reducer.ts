@@ -236,6 +236,11 @@ export function appReducer(state: model.AppState = initialState, action: actions
                 data[opponent].gamesPlayed += (score.games[team] + score.games[opponent]);
                 data[team].points += score.usersSetsWon;
                 data[opponent].points += score.opponentsSetsWon;
+                if (team == score.winner) {
+                    data[team].points++;
+                } else {
+                    data[opponent].points++
+                }
             }
             for (let teamId of Object.keys(data)) {
                 data[teamId].pct = data[teamId].gamesWon / data[teamId].gamesPlayed;

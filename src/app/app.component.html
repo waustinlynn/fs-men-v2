@@ -11,7 +11,7 @@
         <mat-menu #menu="matMenu">
             <a *ngIf="(storeData$ | async).linkedPlayer != undefined" href="teamschedule" mat-menu-item>Schedule</a>
             <a href="standings" mat-menu-item>Standings</a>
-            <a href="rules" mat-menu-item>Rules</a>
+            <a href="rules" mat-menu-item>Rules/Support</a>
             <a *ngIf="(storeData$ | async).admin" href="player" mat-menu-item>Manage Players</a>
             <a *ngIf="(storeData$ | async).admin" href="players" mat-menu-item>Manage Teams</a>
             <a *ngIf="(storeData$ | async).admin" href="divisions" mat-menu-item>Manage Divisions</a>

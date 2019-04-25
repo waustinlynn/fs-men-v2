@@ -8,3 +8,11 @@
 </mat-form-field>
 <hr />
 <al-schedule></al-schedule>
+<div *ngIf="(appData$ | async).linkedPlayer == undefined">
+  <hr />
+  <p class="mat-body">
+    In order to view contact information and post scores, you must login with a Google account. Please send an
+    <a href="mailto:waustinlynn@gmail.com">email</a> with your name and gmail account to be linked. You will recieve a confirmation reply once your account has
+    been linked.
+  </p>
+</div>
